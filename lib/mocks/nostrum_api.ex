@@ -4,4 +4,5 @@ defmodule PlantIdDiscordBotTest.Mocks.Nostrum.Api do
   """
 
   def create_interaction_response(_interaction, response), do: {:ok, response}
+  def get_application_info(), do: {:ok, %{name: "Test Bot", owner: %{username: "Test User"}}}
 end

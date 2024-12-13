@@ -34,4 +34,19 @@ defmodule PlantIdDiscordBot do
   def handle_event({:INTERACTION_CREATE, %{data: %{name: "source"}} = interaction, _ws_state}) do
     Cog.Info.source(interaction)
   end
+
+  # Handle /invite command
+  def handle_event({:INTERACTION_CREATE, %{data: %{name: "invite"}} = interaction, _ws_state}) do
+    Cog.Info.invite(interaction)
+  end
+
+  # Handle /help command
+  def handle_event({:INTERACTION_CREATE, %{data: %{name: "help"}} = interaction, _ws_state}) do
+    Cog.Info.help(interaction)
+  end
+
+  # Handle /info command
+  def handle_event({:INTERACTION_CREATE, %{data: %{name: "info"}} = interaction, _ws_state}) do
+    Cog.Info.info(interaction)
+  end
 end
