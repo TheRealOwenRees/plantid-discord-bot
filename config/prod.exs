@@ -8,6 +8,7 @@ config :plantid_discord_bot,
   image_folder: "priv/static",
   fileserver_url: "http://localhost:4321",
   port: 4321,
-  source: "https://github.com/TheRealOwenRees/plantID_discordbot",
+  source: "https://github.com/TheRealOwenRees/plantid-discord-bot",
   invite:
-    "https://discord.com/api/oauth2/authorize?client_id=948227126094598204&permissions=19520&scope=bot"
+    "https://discord.com/api/oauth2/authorize?client_id=948227126094598204&permissions=19520&scope=bot",
+  api: Nostrum.Api
