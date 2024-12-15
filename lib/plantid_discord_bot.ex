@@ -10,13 +10,13 @@ defmodule PlantIdDiscordBot do
   IO.inspect("Starting PlantIdDiscordBot")
 
   @global_application_commands [
-    {"servers", "All servers that this bot belongs to, []"},
-    {"invite", "Invite link for this bot, []"},
     {"source", "Link to the source code for this bot, []"},
+    {"invite", "Invite link for this bot, []"},
+    {"help", "Help information for this bot, []"},
     {"info", "Information about this bot, []"},
     {"stats", "Statistics about this bot, []"},
-    {"help", "Help information for this bot, []"},
     {"status", "API Status, []"},
+    {"servers", "All servers that this bot belongs to, []"},
     {"id", "ID a plant from up to 5 images, []"}
   ]
 
@@ -49,4 +49,20 @@ defmodule PlantIdDiscordBot do
   def handle_event({:INTERACTION_CREATE, %{data: %{name: "info"}} = interaction, _ws_state}) do
     Cog.Info.info(interaction)
   end
+
+  # def handle_event({:INTERACTION_CREATE, %{data: %{name: "stats"}} = interaction, _ws_state}) do
+  #   Cog.Info.info(interaction)
+  # end
+
+  def handle_event({:INTERACTION_CREATE, %{data: %{name: "status"}} = interaction, _ws_state}) do
+    Cog.Info.status(interaction)
+  end
+
+  # def handle_event({:INTERACTION_CREATE, %{data: %{name: "servers"}} = interaction, _ws_state}) do
+  #   Cog.Info.info(interaction)
+  # end
+
+  # def handle_event({:INTERACTION_CREATE, %{data: %{name: "id"}} = interaction, _ws_state}) do
+  #   Cog.Info.info(interaction)
+  # end
 end

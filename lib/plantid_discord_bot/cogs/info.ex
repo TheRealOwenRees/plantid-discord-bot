@@ -3,9 +3,13 @@ defmodule PlantIdDiscordBot.Cog.Info do
   import Nostrum.Struct.Embed
   alias PlantIdDiscordBot.Utils
 
+  # reference to Nostrum.Api in non-test environments, reference to mock in test
   @api Application.compile_env(:plantid_discord_bot, :api)
+
+  # urls
   @source Application.compile_env(:plantid_discord_bot, :source)
   @invite Application.compile_env(:plantid_discord_bot, :invite)
+  @plantnet_api_base_url Application.compile_env(:plantid_discord_bot, :plantnet_api_base_url)
 
   @doc """
   Sends a link to the source code for this bot.
@@ -68,5 +72,21 @@ defmodule PlantIdDiscordBot.Cog.Info do
 
     response = %{type: 4, data: %{embeds: [embed]}}
     @api.create_interaction_response(interaction, response)
+  end
+
+  @doc """
+  Check the status of all relevant APIs.
+  """
+  def status(interaction) do
+    message =
+      case HTTPoison.get("#{@plantnet_api_base_url}/_status") do
+        {:ok, %{status_code: 200}} ->
+          "PlantNet API is up and running"
+
+        _ ->
+          "PlantNet API is down"
+      end
+
+    @api.create_interaction_response(interaction, %{type: 4, data: %{content: message}})
   end
 end
