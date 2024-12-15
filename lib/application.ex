@@ -6,7 +6,8 @@ defmodule PlantIdDiscordBot.Application do
   @impl true
   def start(_type, _args) do
     children = [
-      PlantIdDiscordBot
+      PlantIdDiscordBot.Consumer,
+      PlantIdDiscordBot.RateLimiter
     ]
 
     opts = [strategy: :one_for_one, name: PlantIdDiscordBot.Supervisor]

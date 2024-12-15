@@ -1,4 +1,4 @@
-defmodule PlantIdDiscordBot do
+defmodule PlantIdDiscordBot.Consumer do
   @moduledoc """
   A Discord bot that identifies plants from photos of their organs.
   """
@@ -30,39 +30,17 @@ defmodule PlantIdDiscordBot do
     Api.create_guild_application_command(1_002_507_312_159_797_318, @global_application_commands)
   end
 
-  # Handle /source command
-  def handle_event({:INTERACTION_CREATE, %{data: %{name: "source"}} = interaction, _ws_state}) do
-    Cog.Info.source(interaction)
+  # Handle application commands
+  def handle_event({:INTERACTION_CREATE, %{data: %{name: command}} = interaction, _ws_state}) do
+    case command do
+      "source" -> Cog.Info.source(interaction)
+      "invite" -> Cog.Info.invite(interaction)
+      "help" -> Cog.Info.help(interaction)
+      "info" -> Cog.Info.info(interaction)
+      "stats" -> Cog.Info.stats(interaction)
+      "status" -> Cog.Info.status(interaction)
+      "servers" -> Cog.Info.servers(interaction)
+      "id" -> Cog.PlantNet.id(interaction)
+    end
   end
-
-  # Handle /invite command
-  def handle_event({:INTERACTION_CREATE, %{data: %{name: "invite"}} = interaction, _ws_state}) do
-    Cog.Info.invite(interaction)
-  end
-
-  # Handle /help command
-  def handle_event({:INTERACTION_CREATE, %{data: %{name: "help"}} = interaction, _ws_state}) do
-    Cog.Info.help(interaction)
-  end
-
-  # Handle /info command
-  def handle_event({:INTERACTION_CREATE, %{data: %{name: "info"}} = interaction, _ws_state}) do
-    Cog.Info.info(interaction)
-  end
-
-  # def handle_event({:INTERACTION_CREATE, %{data: %{name: "stats"}} = interaction, _ws_state}) do
-  #   Cog.Info.info(interaction)
-  # end
-
-  def handle_event({:INTERACTION_CREATE, %{data: %{name: "status"}} = interaction, _ws_state}) do
-    Cog.Info.status(interaction)
-  end
-
-  # def handle_event({:INTERACTION_CREATE, %{data: %{name: "servers"}} = interaction, _ws_state}) do
-  #   Cog.Info.info(interaction)
-  # end
-
-  # def handle_event({:INTERACTION_CREATE, %{data: %{name: "id"}} = interaction, _ws_state}) do
-  #   Cog.Info.info(interaction)
-  # end
 end

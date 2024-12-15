@@ -12,4 +12,8 @@ defmodule PlantIdDiscordBot.Utils do
     |> to_string()
     |> Kernel.<>("ms")
   end
+
+  def get_guilds_names() do
+    Nostrum.Cache.GuildCache.fold([], fn %{name: name}, acc -> [name | acc] end)
+  end
 end
