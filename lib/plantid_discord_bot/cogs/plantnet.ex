@@ -8,9 +8,7 @@ defmodule PlantIdDiscordBot.Cog.PlantNet do
   ID a plant from up to 5 images of organs.
   """
   def id(interaction) do
-    guild_id = interaction.guild_id
-
-    case RateLimiter.check_limit(guild_id) do
+    case RateLimiter.check_limit(interaction.guild_id) do
       {:limit_exceeded, value} ->
         @api.create_interaction_response(interaction, %{
           type: 4,

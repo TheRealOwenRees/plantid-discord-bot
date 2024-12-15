@@ -7,7 +7,8 @@ defmodule PlantIdDiscordBot.Application do
   def start(_type, _args) do
     children = [
       PlantIdDiscordBot.Consumer,
-      PlantIdDiscordBot.RateLimiter
+      PlantIdDiscordBot.RateLimiter,
+      {Plug.Cowboy, scheme: :http, plug: PlantIdDiscordBot.FileServer, options: [port: @port]}
     ]
 
     opts = [strategy: :one_for_one, name: PlantIdDiscordBot.Supervisor]

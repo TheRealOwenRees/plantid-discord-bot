@@ -7,8 +7,6 @@ defmodule PlantIdDiscordBot.Consumer do
   alias Nostrum.Api
   alias PlantIdDiscordBot.Cog
 
-  IO.inspect("Starting PlantIdDiscordBot")
-
   @global_application_commands [
     {"source", "Link to the source code for this bot, []"},
     {"invite", "Invite link for this bot, []"},
@@ -19,8 +17,6 @@ defmodule PlantIdDiscordBot.Consumer do
     {"servers", "All servers that this bot belongs to, []"},
     {"id", "ID a plant from up to 5 images, []"}
   ]
-
-  # Starts the bot
   def handle_event({:READY}) do
     # mock function depending on the environment
     Api.create_global_application_command(@global_application_commands)
@@ -30,7 +26,6 @@ defmodule PlantIdDiscordBot.Consumer do
     Api.create_guild_application_command(1_002_507_312_159_797_318, @global_application_commands)
   end
 
-  # Handle application commands
   def handle_event({:INTERACTION_CREATE, %{data: %{name: command}} = interaction, _ws_state}) do
     case command do
       "source" -> Cog.Info.source(interaction)
