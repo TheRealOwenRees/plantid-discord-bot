@@ -7,7 +7,7 @@ defmodule PlantIdDiscordBotTest.PlantNet.Parser do
   test "to_map" do
     result =
       PlantNetFixtures.raw_response()
-      |> Parser.to_map()
+      |> Parser.to_map!()
 
     assert result == PlantNetFixtures.parsed_response()
   end

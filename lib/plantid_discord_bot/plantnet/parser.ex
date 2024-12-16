@@ -36,14 +36,14 @@ defmodule PlantIdDiscordBot.PlantNet.Parser do
   @spec parse(String.t()) :: map()
   def parse(response) do
     response
-    |> to_map()
+    |> to_map!()
     |> filter_by_score()
     |> add_external_urls()
     |> generate_response_message()
   end
 
-  @spec to_map(String.t()) :: map()
-  def to_map(response), do: Jason.decode!(response)
+  @spec to_map!(String.t()) :: map()
+  def to_map!(response), do: Jason.decode!(response)
 
   @doc """
   Filters the data by score. Data is a parsed response from the PlantNet API.

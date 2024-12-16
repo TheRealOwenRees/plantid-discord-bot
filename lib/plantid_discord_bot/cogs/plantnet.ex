@@ -1,8 +1,8 @@
 defmodule PlantIdDiscordBot.Cog.PlantNet do
   use Nostrum.Consumer
-  # alias PlantIdDiscordBot.Cog.PlantNet
   alias PlantIdDiscordBot.RateLimiter
   alias PlantIdDiscordBot.PlantNet.Parser
+  alias PlantIdDiscordBot.FileServer.File
 
   @api Application.compile_env(:plantid_discord_bot, :api)
 
@@ -26,17 +26,39 @@ defmodule PlantIdDiscordBot.Cog.PlantNet do
       {:ok, _} ->
         do_identification(interaction)
     end
-
-    # TODO increase on success (failed id or otherwise)
-    # RateLimiter.increase_counter(guild_id)
   end
 
   defp do_identification(interaction) do
     attachment_urls = get_attachment_urls(interaction)
     original_images = get_original_images(attachment_urls)
 
+    try do
+      Enum.each(attachment_urls, fn url ->
+        binary = File.download_file!(url)
+        File.save_file!(binary)
+      end)
+    rescue
+      e in RuntimeError ->
+        # Logger.error("An error occurred while processing the images.")
+
+        @api.create_interaction_response(interaction, %{
+          type: 4,
+          data: %{
+            content:
+              "An error occurred while processing the images." <> "\n\nReason:\n#{e.message}"
+          }
+        })
+    end
+
+    # TODO call PlantNet API and get response, with error handling
+
+    # TODO pass this response to the parser as below, with error handling
+
     # temp data
     response_message = Parser.parse(@plantnet_raw_response)
+
+    # TODO increase on success (failed id or otherwise)
+    # RateLimiter.increase_counter(guild_id)
 
     @api.create_interaction_response(interaction, %{
       type: 4,
