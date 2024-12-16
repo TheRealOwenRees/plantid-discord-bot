@@ -56,8 +56,9 @@ defmodule PlantIdDiscordBot.FileServer.File do
     |> File.read()
   end
 
-  @spec delete_file!(String.t()) :: :ok
-  def delete_file!(filename) do
+  # TODO make into a task for async deletion
+  @spec delete_files!([String.t()]) :: :ok
+  def delete_files!(filename) do
     File.rm!(Path.join(@image_path, filename))
   end
 

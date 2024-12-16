@@ -22,6 +22,7 @@ defmodule PlantidDiscordBot.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
+      {:dialyxir, "~> 1.4", only: [:dev, :test], runtime: false},
       {:nostrum, "~> 0.10"},
       {:httpoison, "~> 2.2"},
       {:image, "~> 0.55"},

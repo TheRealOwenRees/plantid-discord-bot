@@ -41,7 +41,7 @@ defmodule PlantIdDiscordBot.Cog.PlantNet do
     attachment_urls = get_attachment_urls(interaction)
     original_images = get_original_images(attachment_urls)
 
-    # FUNCTION  return image filename list as a list of images to delete
+    # FUNCTION return image filename list as a list of images to delete
     saved_images =
       try do
         File.download_and_save_files!(attachment_urls)
@@ -99,7 +99,7 @@ defmodule PlantIdDiscordBot.Cog.PlantNet do
         })
     end
 
-    # TODO delete saved images
+    # TODO delete saved images, make into a task
   end
 
   defp get_attachment_urls(interaction) do
