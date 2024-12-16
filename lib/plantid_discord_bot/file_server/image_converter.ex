@@ -6,9 +6,9 @@ defmodule PlantIdDiscordBot.FileServer.ImageConverter do
 
   def to_jpg!(binary) do
     case MimeTypes.detect_mime_type(binary) do
-      {:error, message} -> raise RuntimeError, message
-      "image/jpeg" -> binary
-      _ -> do_to_jpg(binary)
+      {:ok, "image/jpeg"} -> binary
+      {:ok, _} -> do_to_jpg(binary)
+      {:error, message} -> raise File.Error, message
     end
   end
 

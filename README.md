@@ -15,7 +15,11 @@ If you wish to invite this bot to your server, use [this link.](https://discord.
 
 ## Prerequisites
 
-TODO
+      {:nostrum, "~> 0.10"},
+      {:httpoison, "~> 2.2"},
+      {:image, "~> 0.55"},
+      {:jason, "~> 1.4"},
+      {:plug_cowboy, "~> 2.7"}
 
 ## Installation
 
