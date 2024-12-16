@@ -4,10 +4,10 @@ defmodule PlantIdDiscordBotTest.PlantNet.Parser do
 
   doctest PlantIdDiscordBot.PlantNet.Parser
 
-  test "parse" do
+  test "to_map" do
     result =
       PlantNetFixtures.raw_response()
-      |> Parser.parse()
+      |> Parser.to_map()
 
     assert result == PlantNetFixtures.parsed_response()
   end

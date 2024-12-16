@@ -1,6 +1,28 @@
 defmodule PlantIdDiscordBot.PlantNet.Parser do
   @moduledoc """
   Parses the response from the PlantNet API.
+
+  # Examples
+      iex> response = ~S({
+      ...>   "results": [
+      ...>     {
+      ...>       "score": 0.87871,
+      ...>       "species": {
+      ...>         "scientificNameWithoutAuthor": "Prunus cerasifera",
+      ...>         "commonNames": ["Cherry plum", "myrobalan", "Cherry Plum", "Purple-leaf Plum"]
+      ...>       },
+      ...>       "gbif": {"id": "3021730"},
+      ...>       "powo": {"id": "729568-1"},
+      ...>       "iucn": {"category": "DD"}
+      ...>     }
+      ...>   ]
+      ...> })
+      iex> PlantIdDiscordBot.PlantNet.Parser.parse(response)
+
+      "My best guess is **Prunus cerasifera** with a confidence of **88%**. Common names include **Cherry plum, myrobalan, Cherry Plum, Purple-leaf Plum**.
+
+      [GBIF](<https://www.gbif.org/species/3021730>) | [PFAF](<https://pfaf.org/user/Plant.aspx?LatinName=Prunus+cerasifera>) | [POWO](<https://powo.science.kew.org/taxon/729568-1>)
+      Threat status: DD"
   """
 
   @gbif_base_url "https://www.gbif.org/species"
@@ -12,7 +34,16 @@ defmodule PlantIdDiscordBot.PlantNet.Parser do
   Parses the response from the PlantNet API into a map.
   """
   @spec parse(String.t()) :: map()
-  def parse(response), do: Jason.decode!(response)
+  def parse(response) do
+    response
+    |> to_map()
+    |> filter_by_score()
+    |> add_external_urls()
+    |> generate_response_message()
+  end
+
+  @spec to_map(String.t()) :: map()
+  def to_map(response), do: Jason.decode!(response)
 
   @doc """
   Filters the data by score. Data is a parsed response from the PlantNet API.
@@ -40,6 +71,24 @@ defmodule PlantIdDiscordBot.PlantNet.Parser do
     Map.put(data, "results", updated_results)
   end
 
+  @doc """
+  Generates a response message from the data. Data is a parsed response from the PlantNet API.
+  """
+  @spec generate_response_message(map()) :: String.t()
+  def generate_response_message(data) do
+    best_result = hd(data["results"])
+    other_results = tl(data["results"])
+    best_guess_name = best_result["species"]["scientificNameWithoutAuthor"]
+    score = round(best_result["score"] * 100) |> Integer.to_string()
+
+    """
+    My best guess is **#{best_guess_name}** with a confidence of **#{score}%**. Common names include **#{Enum.join(best_result["species"]["commonNames"], ", ")}**.
+
+    [GBIF](<#{best_result["gbif_url"]}>) | [PFAF](<#{best_result["pfaf_url"]}>) | [POWO](<#{best_result["powo_url"]}>)
+    Threat status: #{best_result["iucn"]["category"]}
+    """
+  end
+
   @spec generate_gbif_url(map()) :: map()
   defp generate_gbif_url(data) do
     Enum.map(data, fn result ->
@@ -65,5 +114,15 @@ defmodule PlantIdDiscordBot.PlantNet.Parser do
       powo_id = result["powo"]["id"]
       if powo_id, do: Map.put(result, "powo_url", "#{@powo_base_url}/#{powo_id}"), else: result
     end)
+  end
+
+  defp get_alternatives(data) do
+    if length(data) === 0 do
+      "No alternatives found."
+    else
+      alternatives =
+        Enum.map(data, & &1["species"]["scientificNameWithoutAuthor"])
+        |> Enum.join(", ")
+    end
   end
 end

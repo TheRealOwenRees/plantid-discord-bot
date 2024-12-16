@@ -1,7 +1,6 @@
 import Config
 
 config :plantid_discord_bot,
-  start_time: DateTime.utc_now(),
   guild_ids: [1_002_507_312_159_797_318],
   plantnet_api_key: System.get_env("PLANTNET_API_KEY"),
   plantnet_api_base_url: "https://my-api.plantnet.org/v2",

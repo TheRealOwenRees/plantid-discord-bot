@@ -1,5 +1,5 @@
 defmodule PlantIdDiscordBot.Utils do
-  @start_time Application.compile_env(:plantid_discord_bot, :start_time)
+  @start_time Application.get_env(:plantid_discord_bot, :start_time)
 
   def get_uptime() do
     DateTime.diff(DateTime.utc_now(), @start_time)
