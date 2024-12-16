@@ -56,6 +56,11 @@ defmodule PlantIdDiscordBot.FileServer.File do
     |> File.read()
   end
 
+  @spec delete_file!(String.t()) :: :ok
+  def delete_file!(filename) do
+    File.rm!(Path.join(@image_path, filename))
+  end
+
   @spec download_file!(String.t()) :: binary
   defp download_file!(url) do
     HTTPoison.get!(url)
