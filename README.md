@@ -11,8 +11,27 @@ If you wish to invite this bot to your server, use [this link.](https://discord.
 - Takes the message picture attachments and attempts to identify them
 - Returns a suggested plant name and up to 2 alternatives, with a percentage confidence rating
 - Plant names are given in latin with a list of possible common names
-- Provides links to [GBIF] and [PFAF] for the identified plant
+- Provides links to [GBIF], [PFAF], and [POWO] for the identified plant
 
 ## Prerequisites
 
-List here
+TODO
+
+## Installation
+
+TODO
+
+## Development
+
+Want to contribute? Simply fork, edit and then create a pull request. Details of how to do this can be found [here](https://www.digitalocean.com/community/tutorials/how-to-create-a-pull-request-on-github).
+
+## License
+
+MIT
+
+[//]: # "These are reference links used in the body of this note and get stripped out when the markdown processor does its job. There is no need to format nicely because it shouldn't be seen. Thanks SO - http://stackoverflow.com/questions/4823468/store-comments-in-markdown-syntax"
+[git-repo-url]: https://github.com/TheRealOwenRees/plantid-discord-bot
+[Plantnet API]: https://my.plantnet.org/
+[GBIF]: https://pypi.org/project/python-dotenv/
+[PFAF]: https://pfaf.org
+[POWO]: https://powo.science.kew.org/
