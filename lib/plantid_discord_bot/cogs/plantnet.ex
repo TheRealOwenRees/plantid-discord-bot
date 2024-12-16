@@ -8,7 +8,6 @@ defmodule PlantIdDiscordBot.Cog.PlantNet do
   @api Application.compile_env(:plantid_discord_bot, :api)
   @plantnet_api_base_url Application.compile_env(:plantid_discord_bot, :plantnet_api_base_url)
   @plantnet_api_key Application.compile_env(:plantid_discord_bot, :plantnet_api_key)
-  @score_threshold Application.compile_env(:plantid_discord_bot, :score_threshold)
   @max_results Application.compile_env(:plantid_discord_bot, :max_results)
 
   @doc """
@@ -41,7 +40,6 @@ defmodule PlantIdDiscordBot.Cog.PlantNet do
     attachment_urls = get_attachment_urls(interaction)
     original_images = get_original_images(attachment_urls)
 
-    # FUNCTION return image filename list as a list of images to delete
     saved_images =
       try do
         File.download_and_save_files!(attachment_urls)
@@ -68,9 +66,10 @@ defmodule PlantIdDiscordBot.Cog.PlantNet do
     case HTTPoison.get(query_uri) do
       {:ok, %HTTPoison.Response{status_code: 200, body: body}} ->
         response_message = Parser.parse(body)
-        # RateLimiter.increase_counter(guild_id)
+        RateLimiter.increase_counter(interaction.guild_id)
+
         Api.create_followup_message(interaction.application_id, interaction.token, %{
-          content: response_message
+          content: response_message <> "\n#{original_images}"
         })
 
       {:ok, %HTTPoison.Response{status_code: 400}} ->
@@ -81,7 +80,8 @@ defmodule PlantIdDiscordBot.Cog.PlantNet do
 
       {:ok, %HTTPoison.Response{status_code: 404}} ->
         # TODO add logger
-        # RateLimiter.increase_counter(guild_id)
+        RateLimiter.increase_counter(interaction.guild_id)
+
         Api.create_followup_message(interaction.application_id, interaction.token, %{
           content: "Species Not Found"
         })
@@ -99,7 +99,9 @@ defmodule PlantIdDiscordBot.Cog.PlantNet do
         })
     end
 
-    # TODO delete saved images, make into a task
+    # TODO make into a task for async deletion, deal with errors
+    Enum.map(saved_images, fn {:ok, filename} -> filename end)
+    |> File.delete_files!()
   end
 
   defp get_attachment_urls(interaction) do
@@ -115,13 +117,12 @@ defmodule PlantIdDiscordBot.Cog.PlantNet do
   defp build_query_uri(image_filenames) do
     identify_api_url = "#{@plantnet_api_base_url}/identify/all?api-key=#{@plantnet_api_key}"
 
-    query_uri =
-      URI.append_query(
-        URI.parse(identify_api_url),
-        "images=#{Enum.join(image_filenames, "&images=")}"
-      )
-      |> URI.append_query("nb-results=#{@max_results}")
-      |> URI.append_query("type=kt")
-      |> URI.to_string()
+    URI.append_query(
+      URI.parse(identify_api_url),
+      "images=#{Enum.join(image_filenames, "&images=")}"
+    )
+    |> URI.append_query("nb-results=#{@max_results}")
+    |> URI.append_query("type=kt")
+    |> URI.to_string()
   end
 end

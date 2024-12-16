@@ -28,7 +28,7 @@ defmodule PlantIdDiscordBot.PlantNet.Parser do
   @gbif_base_url "https://www.gbif.org/species"
   @pfaf_base_url "https://pfaf.org/user/Plant.aspx?LatinName="
   @powo_base_url "https://powo.science.kew.org/taxon"
-  @score_threshold 0.3
+  @score_threshold Application.compile_env(:plantid_discord_bot, :score_threshold)
 
   @doc """
   Parses the response from the PlantNet API into a map.
@@ -86,6 +86,8 @@ defmodule PlantIdDiscordBot.PlantNet.Parser do
 
     [GBIF](<#{best_result["gbif_url"]}>) | [PFAF](<#{best_result["pfaf_url"]}>) | [POWO](<#{best_result["powo_url"]}>)
     Threat status: #{best_result["iucn"]["category"]}
+
+    #{get_alternatives(other_results)}
     """
   end
 
@@ -123,6 +125,8 @@ defmodule PlantIdDiscordBot.PlantNet.Parser do
       alternatives =
         Enum.map(data, & &1["species"]["scientificNameWithoutAuthor"])
         |> Enum.join(", ")
+
+      "Alternatives include **#{alternatives}**."
     end
   end
 end

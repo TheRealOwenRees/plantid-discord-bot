@@ -56,10 +56,10 @@ defmodule PlantIdDiscordBot.FileServer.File do
     |> File.read()
   end
 
-  # TODO make into a task for async deletion
+  # TODO make into a task for async deletion and deal with errors
   @spec delete_files!([String.t()]) :: :ok
-  def delete_files!(filename) do
-    File.rm!(Path.join(@image_path, filename))
+  def delete_files!(filenames) do
+    Enum.each(filenames, &File.rm!(Path.join(@image_path, &1)))
   end
 
   @spec download_file!(String.t()) :: binary
