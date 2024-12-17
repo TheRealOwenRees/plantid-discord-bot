@@ -15,7 +15,7 @@ defmodule PlantIdDiscordBot.Cog.PlantNet do
   """
   def id(interaction) do
     case RateLimiter.check_limit(interaction.guild_id) do
-      {:limit_exceeded, value} ->
+      {:limit_exceeded, _} ->
         @api.create_interaction_response(interaction, %{
           type: 4,
           data: %{

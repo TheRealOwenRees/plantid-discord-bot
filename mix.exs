@@ -27,7 +27,8 @@ defmodule PlantidDiscordBot.MixProject do
       {:httpoison, "~> 2.2"},
       {:image, "~> 0.55"},
       {:jason, "~> 1.4"},
-      {:plug_cowboy, "~> 2.7"}
+      {:plug_cowboy, "~> 2.7"},
+      {:quantum, "~> 3.5"}
     ]
   end
 end

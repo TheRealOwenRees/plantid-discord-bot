@@ -10,3 +10,5 @@ config :plantid_discord_bot,
   invite:
     "https://discord.com/api/oauth2/authorize?client_id=948227126094598204&permissions=19520&scope=bot",
   api: Nostrum.Api
+
+config :logger, level: :critical

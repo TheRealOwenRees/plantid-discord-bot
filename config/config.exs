@@ -6,4 +6,11 @@ config :plantid_discord_bot,
   score_threshold: 0.3,
   max_results: 5
 
+config :plantid_discord_bot, PlantIdDiscordBot.Scheduler,
+  jobs: [
+    {"@daily", {PlantIdDiscordBot.RateLimiter, :reset_counters, []}}
+  ]
+
+config :logger, level: :debug
+
 import_config "#{config_env()}.exs"

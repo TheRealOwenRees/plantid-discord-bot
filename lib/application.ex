@@ -8,6 +8,7 @@ defmodule PlantIdDiscordBot.Application do
     children = [
       PlantIdDiscordBot.Consumer,
       PlantIdDiscordBot.RateLimiter,
+      PlantIdDiscordBot.Scheduler,
       {Plug.Cowboy, scheme: :http, plug: PlantIdDiscordBot.FileServer, options: [port: @port]}
     ]
 

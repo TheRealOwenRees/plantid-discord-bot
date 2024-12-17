@@ -47,6 +47,15 @@ defmodule PlantIdDiscordBot.RateLimiter do
   Increase the counter for the number of requests for a guild by one.
   """
   def increase_counter(guild_id) do
-    :ets.update_counter(__MODULE__, guild_id, 1)
+    case get(guild_id) do
+      {:ok, _} -> :ets.update_counter(__MODULE__, guild_id, 1)
+      {:error, _} -> put(guild_id, 1)
+    end
   end
+
+  @doc """
+  Reset all guilds counters to 0.
+  """
+  @spec reset_counters() :: :ok
+  def reset_counters(), do: :ets.delete_all_objects(__MODULE__)
 end
