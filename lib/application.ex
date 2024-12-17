@@ -5,10 +5,6 @@ defmodule PlantIdDiscordBot.Application do
 
   @impl true
   def start(_type, _args) do
-    # Set the start time for the application
-    start_time = DateTime.utc_now()
-    Application.put_env(:plantid_discord_bot, :start_time, start_time)
-
     children = [
       PlantIdDiscordBot.Consumer,
       PlantIdDiscordBot.RateLimiter,
