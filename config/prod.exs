@@ -13,4 +13,4 @@ config :plantid_discord_bot,
 
 config :logger, :console,
   format: "$time $metadata[$level] $message\n",
-  level: :info
+  level: :error

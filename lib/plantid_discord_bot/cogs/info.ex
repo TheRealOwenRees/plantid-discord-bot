@@ -3,6 +3,8 @@ defmodule PlantIdDiscordBot.Cog.Info do
   import Nostrum.Struct.Embed
   alias PlantIdDiscordBot.Utils
 
+  require Logger
+
   # reference to Nostrum.Api in non-test environments, reference to mock in test
   @api Application.compile_env(:plantid_discord_bot, :api)
 

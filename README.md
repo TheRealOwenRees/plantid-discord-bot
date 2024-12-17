@@ -13,13 +13,34 @@ If you wish to invite this bot to your server, use [this link.](https://discord.
 - Plant names are given in latin with a list of possible common names
 - Provides links to [GBIF], [PFAF], and [POWO] for the identified plant
 
-## Prerequisites
+## Dependencies
 
+```elixir
+# mix.exs
+
+defp deps do
+    [
+      {:dialyxir, "~> 1.4", only: [:dev, :test], runtime: false},
       {:nostrum, "~> 0.10"},
       {:httpoison, "~> 2.2"},
       {:image, "~> 0.55"},
       {:jason, "~> 1.4"},
-      {:plug_cowboy, "~> 2.7"}
+      {:plug_cowboy, "~> 2.7"},
+      {:quantum, "~> 3.5"},
+      {:tesla, "~> 1.13"}
+    ]
+  end
+```
+
+## Environment Variables
+
+Below are the environment variables that you need to set for the program to function:
+
+```
+DISCORD_TOKEN=               client secret from the bot's application
+LOGS_DISCORD_WEBHOOK_URL=    webhook url for the log channel
+PLANTNET_API_KEY=            API key for the PlantNet service
+```
 
 ## Installation
 

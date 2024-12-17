@@ -2,7 +2,6 @@ defmodule PlantIdDiscordBot.Consumer do
   @moduledoc """
   A Discord bot that identifies plants from photos of their organs.
   """
-
   use Nostrum.Consumer
   alias Nostrum.Api
   alias PlantIdDiscordBot.Cog

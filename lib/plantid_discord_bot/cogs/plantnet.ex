@@ -1,4 +1,5 @@
 defmodule PlantIdDiscordBot.Cog.PlantNet do
+  require Logger
   use Nostrum.Consumer
   alias PlantIdDiscordBot.RateLimiter
   alias PlantIdDiscordBot.PlantNet.Parser
@@ -50,7 +51,7 @@ defmodule PlantIdDiscordBot.Cog.PlantNet do
           })
       end
 
-    IO.inspect(saved_images)
+    Logger.debug(saved_images)
 
     # TODO use actual image data
     image1 =
@@ -73,13 +74,13 @@ defmodule PlantIdDiscordBot.Cog.PlantNet do
         })
 
       {:ok, %HTTPoison.Response{status_code: 400}} ->
-        # TODO add logger
+        Logger.error("Malformed request sent to the PlantNet API")
+
         Api.create_followup_message(interaction.application_id, interaction.token, %{
           content: "Bad Request"
         })
 
       {:ok, %HTTPoison.Response{status_code: 404}} ->
-        # TODO add logger
         RateLimiter.increase_counter(interaction.guild_id)
 
         Api.create_followup_message(interaction.application_id, interaction.token, %{
@@ -87,19 +88,20 @@ defmodule PlantIdDiscordBot.Cog.PlantNet do
         })
 
       {:ok, %HTTPoison.Response{status_code: 429}} ->
-        # TODO add logger
+        Logger.warning("Request limit exceeded for the PlantNet API")
+
         Api.create_followup_message(interaction.application_id, interaction.token, %{
           content: "Too Many Requests"
         })
 
       {_, _} ->
-        # TODO add logger
+        Logger.error("Internal server error when contacting the PlantNet API")
+
         Api.create_followup_message(interaction.application_id, interaction.token, %{
           content: "Internal Server Error"
         })
     end
 
-    # TODO make into a task for async deletion, deal with errors
     Enum.map(saved_images, fn {:ok, filename} -> filename end)
     |> File.delete_files!()
   end

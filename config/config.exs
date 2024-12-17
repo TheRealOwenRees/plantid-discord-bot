@@ -11,8 +11,4 @@ config :plantid_discord_bot, PlantIdDiscordBot.Scheduler,
     {"@daily", {PlantIdDiscordBot.RateLimiter, :reset_counters, []}}
   ]
 
-config :logger, :console,
-  format: "$time $metadata[$level] $message\n",
-  level: :info
-
 import_config "#{config_env()}.exs"
