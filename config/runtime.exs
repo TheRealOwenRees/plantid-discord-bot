@@ -16,5 +16,5 @@ config :nostrum,
   ffmpeg: nil
 
 config :logger, :console,
-  formate: "$time $metadata[$level] $message\n",
+  format: "$time $metadata[$level] $message\n",
   level: :info
