@@ -59,7 +59,19 @@ defmodule PlantIdDiscordBot.FileServer.File do
   # TODO make into a task for async deletion and deal with errors
   @spec delete_files!([String.t()]) :: :ok
   def delete_files!(filenames) do
-    Enum.each(filenames, &File.rm!(Path.join(@image_path, &1)))
+    tasks =
+      Enum.map(filenames, fn filename ->
+        Task.async(fn ->
+          try do
+            File.rm!(Path.join(@image_path, filename))
+          rescue
+            # TODO Logger
+            e -> IO.inspect(e)
+          end
+        end)
+      end)
+
+    Enum.map(tasks, &Task.await/1)
   end
 
   @spec download_file!(String.t()) :: binary
