@@ -14,15 +14,3 @@ config :plantid_discord_bot,
 config :nostrum,
   token: System.get_env("DISCORD_TOKEN"),
   ffmpeg: nil
-
-config :logger,
-  backends: [{PlantIdDiscordBot.DiscordLogger, :discord_logger}, :console]
-
-config :logger, :console,
-  format: "$time $metadata[$level] $message\n",
-  level: :info
-
-config :logger, :discord_logger,
-  webhook_url: System.get_env("LOGS_DISCORD_WEBHOOK_URL"),
-  level: :error,
-  bot_token: System.get_env("DISCORD_TOKEN")
