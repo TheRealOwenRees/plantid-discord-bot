@@ -51,6 +51,7 @@ defmodule PlantIdDiscordBot.Cog.PlantNet do
           })
       end
 
+    # TODO remove
     Logger.debug(saved_images)
 
     # TODO use actual image data
@@ -74,10 +75,15 @@ defmodule PlantIdDiscordBot.Cog.PlantNet do
         })
 
       {:ok, %HTTPoison.Response{status_code: 400}} ->
-        Logger.error("Malformed request sent to the PlantNet API")
+        Logger.error("""
+        Malformed request sent to the PlantNet Api from PlantIdDiscordBot.Cog.PlantNet.do_identification
+          Query URI: #{query_uri}
+          Status Code: 400
+          Response Body: #{String.slice(body, 0..500)}... (truncated)
+        """)
 
         Api.create_followup_message(interaction.application_id, interaction.token, %{
-          content: "Bad Request"
+          content: "Bad Request. This error has been logged."
         })
 
       {:ok, %HTTPoison.Response{status_code: 404}} ->

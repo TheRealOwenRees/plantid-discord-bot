@@ -1,5 +1,6 @@
 defmodule PlantIdDiscordBot.RateLimiter do
   use GenServer
+  require Logger
 
   @request_limit Application.compile_env(:plantid_discord_bot, :guild_request_limit_per_day)
 
@@ -48,8 +49,13 @@ defmodule PlantIdDiscordBot.RateLimiter do
   """
   def increase_counter(guild_id) do
     case get(guild_id) do
-      {:ok, _} -> :ets.update_counter(__MODULE__, guild_id, 1)
-      {:error, _} -> put(guild_id, 1)
+      {:ok, _} ->
+        :ets.update_counter(__MODULE__, guild_id, 1)
+        Logger.debug("Increased counter for guild #{guild_id}")
+
+      {:error, _} ->
+        put(guild_id, 1)
+        Logger.debug("Set counter for guild #{guild_id} to 1")
     end
   end
 
@@ -57,5 +63,8 @@ defmodule PlantIdDiscordBot.RateLimiter do
   Reset all guilds counters to 0.
   """
   @spec reset_counters() :: :ok
-  def reset_counters(), do: :ets.delete_all_objects(__MODULE__)
+  def reset_counters() do
+    :ets.delete_all_objects(__MODULE__)
+    Logger.debug("Reset all guilds counters")
+  end
 end
