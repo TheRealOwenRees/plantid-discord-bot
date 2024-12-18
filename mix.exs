@@ -14,7 +14,7 @@ defmodule PlantidDiscordBot.MixProject do
   # Run "mix help compile.app" to learn about applications.
   def application do
     [
-      extra_applications: [:logger],
+      extra_applications: [:logger, :observer, :wx, :runtime_tools],
       mod: {PlantIdDiscordBot.Application, []}
     ]
   end
@@ -28,8 +28,7 @@ defmodule PlantidDiscordBot.MixProject do
       {:image, "~> 0.55"},
       {:jason, "~> 1.4"},
       {:plug_cowboy, "~> 2.7"},
-      {:quantum, "~> 3.5"},
-      {:tesla, "~> 1.13"}
+      {:quantum, "~> 3.5"}
     ]
   end
 end

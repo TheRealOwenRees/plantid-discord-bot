@@ -1,8 +1,5 @@
 defmodule PlantIdDiscordBot.DiscordLogger do
   require Logger
-  use Tesla
-
-  plug(Tesla.Middleware.JSON)
 
   @behaviour :gen_event
 
@@ -40,13 +37,26 @@ defmodule PlantIdDiscordBot.DiscordLogger do
 
   def log_to_discord(webhook_url, level, msg, ts, md) do
     formatted_msg = format_message(level, msg, ts, md)
-    body = %{content: formatted_msg}
+    body = %{content: formatted_msg} |> Jason.encode!()
+    headers = [{~c"Content-Type", ~c"application/json"}]
 
-    post(webhook_url, body)
+    :httpc.request(
+      :post,
+      {webhook_url, headers, ~c"application/json", body},
+      [],
+      []
+    )
     |> case do
-      {:ok, %{status: status}} when status in 200..299 -> :ok
-      {:error, reason} -> Logger.error("Error sending log to Discord: #{inspect(reason)}")
-      _any -> Logger.error("Error sending log to Discord")
+      {:ok, {{~c"HTTP/1.1", status, _}, _headers, _body}} when status in 200..299 ->
+        :ok
+
+      {:ok, {{~c"HTTP/1.1", status, _}, _headers, response_body}} ->
+        Logger.error(
+          "Failed to send log to Discord: Status #{status}, Body: #{inspect(response_body)}"
+        )
+
+      {:error, reason} ->
+        Logger.error("Error sending log to Discord: #{inspect(reason)}")
     end
   end
 
