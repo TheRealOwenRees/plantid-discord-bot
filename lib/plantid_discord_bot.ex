@@ -18,7 +18,7 @@ defmodule PlantIdDiscordBot.Consumer do
   ]
   def handle_event({:READY}) do
     # mock function depending on the environment
-    Api.create_global_application_command(@global_application_commands)
+    # Api.create_global_application_command(@global_application_commands)
     # TODO fix, not working
     Api.update_status(:online, "Guess the Plant|/help")
     # TODO remove in prod

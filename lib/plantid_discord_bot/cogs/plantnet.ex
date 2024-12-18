@@ -10,6 +10,7 @@ defmodule PlantIdDiscordBot.Cog.PlantNet do
   @plantnet_api_base_url Application.compile_env(:plantid_discord_bot, :plantnet_api_base_url)
   @plantnet_api_key Application.compile_env(:plantid_discord_bot, :plantnet_api_key)
   @max_results Application.compile_env(:plantid_discord_bot, :max_results)
+  @fileserver_url Application.compile_env(:plantid_discord_bot, :fileserver_url)
 
   @doc """
   Process /id application command.
@@ -51,9 +52,6 @@ defmodule PlantIdDiscordBot.Cog.PlantNet do
           })
       end
 
-    # TODO remove
-    Logger.debug(saved_images)
-
     # TODO use actual image data
     image1 =
       "https://upload.wikimedia.org/wikipedia/commons/f/ff/Prunus_cerasifera_A.jpg"
@@ -62,6 +60,11 @@ defmodule PlantIdDiscordBot.Cog.PlantNet do
       "https://le-jardin-de-pascal.com/2195113-large_default/prunus-cerasifera-atropurpurea-prunier-myrobolan-nigra.jpg"
 
     images = [image1, image2]
+
+    # production:
+    # images = Enum.map(saved_images, fn {:ok, filename} -> "#{@fileserver_url}/#{filename}" end)
+
+    Logger.debug(Enum.join(images, ", "))
 
     query_uri = build_query_uri(images)
 
@@ -74,7 +77,7 @@ defmodule PlantIdDiscordBot.Cog.PlantNet do
           content: response_message <> "\n#{original_images}"
         })
 
-      {:ok, %HTTPoison.Response{status_code: 400}} ->
+      {:ok, %HTTPoison.Response{status_code: 400, body: body}} ->
         Logger.error("""
         Malformed request sent to the PlantNet Api from PlantIdDiscordBot.Cog.PlantNet.do_identification
           Query URI: #{query_uri}
