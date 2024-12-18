@@ -52,17 +52,12 @@ defmodule PlantIdDiscordBot.Cog.PlantNet do
           })
       end
 
-    # TODO use actual image data
-    image1 =
-      "https://upload.wikimedia.org/wikipedia/commons/f/ff/Prunus_cerasifera_A.jpg"
-
-    image2 =
-      "https://le-jardin-de-pascal.com/2195113-large_default/prunus-cerasifera-atropurpurea-prunier-myrobolan-nigra.jpg"
-
-    images = [image1, image2]
-
-    # production:
-    # images = Enum.map(saved_images, fn {:ok, filename} -> "#{@fileserver_url}/#{filename}" end)
+    images =
+      if Mix.env() in [:test, :dev] do
+        PlantIdDiscordBotTest.Mocks.PlantNet.Images.images()
+      else
+        Enum.map(saved_images, fn {:ok, filename} -> "#{@fileserver_url}/#{filename}" end)
+      end
 
     Logger.debug(Enum.join(images, ", "))
 
