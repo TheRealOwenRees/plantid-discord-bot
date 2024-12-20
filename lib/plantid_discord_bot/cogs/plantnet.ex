@@ -52,8 +52,10 @@ defmodule PlantIdDiscordBot.Cog.PlantNet do
       cleanup_saved_images(saved_images)
     rescue
       e ->
+        Logger.error(Exception.format(:error, e, __STACKTRACE__))
+
         Api.create_followup_message(interaction.application_id, interaction.token, %{
-          content: e.message
+          content: "An error occurred. This error has been logged."
         })
     end
   end

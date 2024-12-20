@@ -13,8 +13,10 @@ defmodule PlantidDiscordBot.MixProject do
 
   # Run "mix help compile.app" to learn about applications.
   def application do
+    dev_apps = if Mix.env() == :dev, do: [:observer, :wx], else: []
+
     [
-      extra_applications: [:logger, :observer, :wx, :runtime_tools],
+      extra_applications: [:logger, :runtime_tools] ++ dev_apps,
       mod: {PlantIdDiscordBot.Application, []}
     ]
   end
