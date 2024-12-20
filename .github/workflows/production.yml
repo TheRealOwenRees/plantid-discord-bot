@@ -1,0 +1,69 @@
+name: Production Deploy
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup BEAM / Elixir
+        uses: erlef/setup-beam@v1
+        with:
+          otp-version: 26
+          elixir-version: 1.16.2
+
+      - name: Cache dependencies
+        uses: actions/cache@v4
+        with:
+          path: deps
+          key: ${{ runner.os }}-mix-${{ hashFiles('**/mix.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-mix-
+
+      - name: Install dependencies
+        run: mix deps.get
+
+      - name: Run tests
+        run: mix test
+
+      - name: Clean build
+        run: MIX_ENV=prod mix clean --deps
+
+      - name: Build release
+        run: MIX_ENV=prod mix release
+
+      - name: Compress build
+        run: tar -czf release.tar.gz -C _build/prod/rel plantid_discord_bot
+
+      - name: Upload release to server
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.SSH_KEY }}
+          port: ${{ secrets.PORT }}
+          source: release.tar.gz
+          target: /home/${{ secrets.USERNAME }}/plantid_discord_bot/
+
+      - name: Deploy release
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.HOST }}
+          username: ${{ secrets.USERNAME }}
+          key: ${{ secrets.SSH_KEY }}
+          port: ${{ secrets.PORT }}
+          script: |
+            cd /home/${{ secrets.USERNAME }}/plantid_discord_bot
+            tar -xzf release.tar.gz
+            current_release/bin/plantid_discord_bot stop || true
+            rm -rf old_release
+            mv current_release old_release || true
+            mv file_server current_release
+            current_release/bin/plantid_discord_bot daemon
+            rm -f release.tar.gz
