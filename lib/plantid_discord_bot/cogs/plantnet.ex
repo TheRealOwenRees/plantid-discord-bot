@@ -39,17 +39,14 @@ defmodule PlantIdDiscordBot.Cog.PlantNet do
       }
     })
 
+    attachment_urls = get_attachment_urls(interaction)
+    original_images = get_original_images(attachment_urls)
+    saved_images = File.download_and_save_files!(attachment_urls)
+
     try do
-      attachment_urls = get_attachment_urls(interaction)
-      original_images = get_original_images(attachment_urls)
-
-      saved_images = File.download_and_save_files!(attachment_urls)
-
       prepare_images(saved_images)
       |> build_query_uri()
       |> get_response(interaction, original_images)
-
-      cleanup_saved_images(saved_images)
     rescue
       e ->
         Logger.error(Exception.format(:error, e, __STACKTRACE__))
@@ -57,6 +54,8 @@ defmodule PlantIdDiscordBot.Cog.PlantNet do
         Api.create_followup_message(interaction.application_id, interaction.token, %{
           content: "An error occurred. This error has been logged."
         })
+    after
+      cleanup_saved_images(saved_images)
     end
   end
 
@@ -70,11 +69,22 @@ defmodule PlantIdDiscordBot.Cog.PlantNet do
   defp get_original_images(attachment_urls), do: Enum.join(attachment_urls, "\n")
 
   defp prepare_images(saved_images) do
-    if Mix.env() in [:test, :dev] do
-      PlantIdDiscordBotTest.Mocks.PlantNet.Images.images()
-    else
-      Enum.map(saved_images, fn {:ok, filename} -> "#{@fileserver_url}/#{filename}" end)
+    case Application.get_env(:plantid_discord_bot, :environment) do
+      :test ->
+        PlantIdDiscordBotTest.Mocks.PlantNet.Images.images()
+
+      :dev ->
+        PlantIdDiscordBotTest.Mocks.PlantNet.Images.images()
+
+      _ ->
+        Enum.map(saved_images, fn {:ok, filename} -> "#{@fileserver_url}/#{filename}" end)
     end
+
+    # if Mix.env() in [:test, :dev] do
+    #   PlantIdDiscordBotTest.Mocks.PlantNet.Images.images()
+    # else
+    #   Enum.map(saved_images, fn {:ok, filename} -> "#{@fileserver_url}/#{filename}" end)
+    # end
   end
 
   @spec build_query_uri([String.t()]) :: String.t()
