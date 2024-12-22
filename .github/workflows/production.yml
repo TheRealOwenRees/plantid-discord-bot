@@ -66,6 +66,6 @@ jobs:
             current_release/bin/plantid_discord_bot stop || true
             rm -rf old_release
             mv current_release old_release || true
-            mv file_server current_release
+            mv plantid_discord_bot current_release
             current_release/bin/plantid_discord_bot daemon
             rm -f release.tar.gz
