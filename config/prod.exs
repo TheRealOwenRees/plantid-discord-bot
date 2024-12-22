@@ -1,14 +1,12 @@
 import Config
 
 config :plantid_discord_bot,
-  api: Nostrum.Api
+  api: Nostrum.Api,
+  port: 4000
 
 config :plantid_discord_bot, :environment, :prod
 
 config :logger,
   backends: [{PlantIdDiscordBot.DiscordLogger, :discord_logger}]
 
-config :logger, :discord_logger,
-  webhook_url: System.get_env("PLANTID_LOGS_DISCORD_WEBHOOK_URL"),
-  level: :error,
-  bot_token: System.get_env("PLANTID_DISCORD_BOT_TOKEN")
+config :logger, :discord_logger, level: :error

@@ -8,9 +8,7 @@ defmodule PlantIdDiscordBot.Cog.PlantNet do
 
   @api Application.compile_env(:plantid_discord_bot, :api)
   @plantnet_api_base_url Application.compile_env(:plantid_discord_bot, :plantnet_api_base_url)
-  @plantnet_api_key Application.compile_env(:plantid_discord_bot, :plantnet_api_key)
   @max_results Application.compile_env(:plantid_discord_bot, :max_results)
-  @fileserver_url Application.compile_env(:plantid_discord_bot, :fileserver_url)
 
   @doc """
   Process /id application command.
@@ -77,19 +75,17 @@ defmodule PlantIdDiscordBot.Cog.PlantNet do
         PlantIdDiscordBotTest.Mocks.PlantNet.Images.images()
 
       _ ->
-        Enum.map(saved_images, fn {:ok, filename} -> "#{@fileserver_url}/#{filename}" end)
+        Enum.map(saved_images, fn {:ok, filename} ->
+          "#{Application.get_env(:plantid_discord_bot, :fileserver_url)}/#{filename}"
+        end)
     end
-
-    # if Mix.env() in [:test, :dev] do
-    #   PlantIdDiscordBotTest.Mocks.PlantNet.Images.images()
-    # else
-    #   Enum.map(saved_images, fn {:ok, filename} -> "#{@fileserver_url}/#{filename}" end)
-    # end
   end
 
   @spec build_query_uri([String.t()]) :: String.t()
   defp build_query_uri(image_filenames) do
-    URI.parse("#{@plantnet_api_base_url}/identify/all?api-key=#{@plantnet_api_key}")
+    URI.parse(
+      "#{@plantnet_api_base_url}/identify/all?api-key=#{Application.get_env(:plantid_discord_bot, :plantnet_api_key)}"
+    )
     |> URI.append_query("images=#{Enum.join(image_filenames, "&images=")}")
     |> URI.append_query("nb-results=#{@max_results}")
     |> URI.append_query("type=kt")
