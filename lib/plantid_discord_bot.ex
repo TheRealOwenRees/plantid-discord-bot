@@ -5,17 +5,10 @@ defmodule PlantIdDiscordBot.Consumer do
   use Nostrum.Consumer
   alias Nostrum.Api
   alias PlantIdDiscordBot.Cog
+  alias PlantIdDiscordBot.Consumer.Commands
 
-  @global_application_commands [
-    {"source", "Link to the source code for this bot, []"},
-    {"invite", "Invite link for this bot, []"},
-    {"help", "Help information for this bot, []"},
-    {"info", "Information about this bot, []"},
-    {"stats", "Statistics about this bot, []"},
-    {"status", "API Status, []"},
-    {"servers", "All servers that this bot belongs to, []"},
-    {"id", "ID a plant from up to 5 images, []"}
-  ]
+  @global_application_commands Commands.global_application_commands()
+
   def handle_event({:READY}) do
     # mock function depending on the environment
     # Api.create_global_application_command(@global_application_commands)
