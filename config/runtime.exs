@@ -2,7 +2,7 @@ import Config
 
 config :plantid_discord_bot,
   start_time: DateTime.utc_now(),
-  guild_ids: [1_002_507_312_159_797_318],
+  guild_ids: [],
   api: Nostrum.Api,
   max_results: 5,
   score_threshold: 0.3,

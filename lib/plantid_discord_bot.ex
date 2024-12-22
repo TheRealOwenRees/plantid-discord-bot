@@ -9,13 +9,10 @@ defmodule PlantIdDiscordBot.Consumer do
 
   @global_application_commands Commands.global_application_commands()
 
-  def handle_event({:READY}) do
-    # mock function depending on the environment
-    # Api.create_global_application_command(@global_application_commands)
+  def handle_event({:READY, _data, _ws_state}) do
+    Api.create_global_application_command(@global_application_commands)
     # TODO fix, not working
-    Api.update_status(:online, "Guess the Plant|/help")
-    # TODO remove in prod
-    Api.create_guild_application_command(1_002_507_312_159_797_318, @global_application_commands)
+    Api.update_status(:online, %{name: "Guess the Plant | /help", type: 0})
   end
 
   def handle_event({:INTERACTION_CREATE, %{data: %{name: command}} = interaction, _ws_state}) do
