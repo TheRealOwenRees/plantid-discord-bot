@@ -67,9 +67,10 @@ jobs:
           script: |
             cd /home/${{ secrets.USERNAME }}/plantid_discord_bot
             tar -xzf release.tar.gz
-            ./current_release/bin/plantid_discord_bot stop || true
+            current_release/bin/plantid_discord_bot stop || true
+            sleep 5
             rm -rf old_release
             mv current_release old_release || true
             mv plantid_discord_bot current_release
-            ./current_release/bin/plantid_discord_bot daemon
+            current_release/bin/plantid_discord_bot daemon
             rm -f release.tar.gz
