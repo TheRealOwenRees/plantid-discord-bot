@@ -12,7 +12,7 @@ defmodule PlantIdDiscordBot.FileServer.Router do
     |> send_resp(200, "OK")
   end
 
-  get "image/:filename" do
+  get "/:filename" do
     filename = conn.params["filename"]
 
     case File.get_file(filename) do
