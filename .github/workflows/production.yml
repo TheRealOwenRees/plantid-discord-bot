@@ -66,8 +66,8 @@ jobs:
           port: ${{ secrets.PORT }}
           script: |
             cd /home/${{ secrets.USERNAME }}/plantid_discord_bot
-            ls- la
-            env| grep PLANTID
+            ls -la
+            env | grep PLANTID
             tar -xzf release.tar.gz
             current_release/bin/plantid_discord_bot stop || true
             rm -rf old_release
