@@ -39,21 +39,34 @@ defmodule PlantIdDiscordBot.Cog.PlantNet do
 
     attachment_urls = get_attachment_urls(interaction)
     original_images = get_original_images(attachment_urls)
-    saved_images = File.download_and_save_files!(attachment_urls)
 
-    try do
-      prepare_images(saved_images)
-      |> build_query_uri()
-      |> get_response(interaction, original_images)
-    rescue
-      e ->
-        Logger.error(Exception.format(:error, e, __STACKTRACE__))
+    saved_images =
+      try do
+        File.download_and_save_files!(attachment_urls)
+      rescue
+        e in ArgumentError ->
+          Api.create_followup_message(interaction.application_id, interaction.token, %{
+            content: e.message
+          })
 
-        Api.create_followup_message(interaction.application_id, interaction.token, %{
-          content: "An error occurred. This error has been logged."
-        })
-    after
-      cleanup_saved_images(saved_images)
+          nil
+      end
+
+    if saved_images do
+      try do
+        prepare_images(saved_images)
+        |> build_query_uri()
+        |> get_response(interaction, original_images)
+      rescue
+        e ->
+          Logger.error(Exception.format(:error, e, __STACKTRACE__))
+
+          Api.create_followup_message(interaction.application_id, interaction.token, %{
+            content: "An error occurred. This error has been logged."
+          })
+      after
+        cleanup_saved_images(saved_images)
+      end
     end
   end
 
