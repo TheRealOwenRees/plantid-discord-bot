@@ -39,6 +39,7 @@ Below are the environment variables that you need to set for the program to func
 PLANTID_DISCORD_BOT_TOKEN=           client secret from the bot's application
 PLANTID_LOGS_DISCORD_WEBHOOK_URL=    webhook url for the log channel
 PLANTNET_API_KEY=                    API key for the PlantNet service
+PLANTID_FILESERVER_URL               URL and port(if needed) for the http file server
 ```
 
 ## Installation
