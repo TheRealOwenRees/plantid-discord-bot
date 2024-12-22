@@ -41,7 +41,7 @@ jobs:
         run: MIX_ENV=prod mix release
 
       - name: Compress build
-        run: tar -czf release.tar.gz -C _build/prod/rel/plantid_discord_bot .
+        run: tar -czf release.tar.gz -C _build/prod/rel plantid_discord_bot
 
       - name: Upload release to server
         uses: appleboy/scp-action@v0.1.7
