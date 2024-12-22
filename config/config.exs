@@ -13,4 +13,8 @@ config :plantid_discord_bot,
   invite:
     "https://discord.com/api/oauth2/authorize?client_id=948227126094598204&permissions=19520&scope=bot"
 
+config :nostrum,
+  token: System.get_env("PLANTID_DISCORD_BOT_TOKEN"),
+  ffmpeg: nil
+
 import_config "#{config_env()}.exs"
