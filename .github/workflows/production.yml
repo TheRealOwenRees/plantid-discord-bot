@@ -30,6 +30,8 @@ jobs:
         run: mix deps.get
 
       - name: Run tests
+        env:
+          PLANTID_DISCORD_BOT_TOKEN: ${{ secrets.PLANTID_DISCORD_BOT_TOKEN }}
         run: mix test
 
       - name: Clean build
