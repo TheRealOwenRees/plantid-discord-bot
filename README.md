@@ -36,9 +36,9 @@ defp deps do
 Below are the environment variables that you need to set for the program to function:
 
 ```
-DISCORD_TOKEN=               client secret from the bot's application
-LOGS_DISCORD_WEBHOOK_URL=    webhook url for the log channel
-PLANTNET_API_KEY=            API key for the PlantNet service
+PLANTID_DISCORD_BOT_TOKEN=           client secret from the bot's application
+PLANTID_LOGS_DISCORD_WEBHOOK_URL=    webhook url for the log channel
+PLANTNET_API_KEY=                    API key for the PlantNet service
 ```
 
 ## Installation
