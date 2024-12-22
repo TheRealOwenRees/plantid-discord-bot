@@ -38,6 +38,8 @@ jobs:
         run: MIX_ENV=prod mix clean --deps
 
       - name: Build release
+        env:
+          PLANTNET_API_KEY: ${{ secrets.PLANTNET_API_KEY }}
         run: MIX_ENV=prod mix release
 
       - name: Compress build
