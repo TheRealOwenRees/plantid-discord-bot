@@ -40,6 +40,8 @@ jobs:
       - name: Build release
         env:
           PLANTNET_API_KEY: ${{ secrets.PLANTNET_API_KEY }}
+          PLANTID_DISCORD_BOT_TOKEN: ${{ secrets.PLANTID_DISCORD_BOT_TOKEN }}
+          PLANTID_LOGS_DISCORD_WEBHOOK_URL: ${{ secrets.PLANTID_LOGS_DISCORD_WEBHOOK_URL }}
         run: MIX_ENV=prod mix release
 
       - name: Compress build
