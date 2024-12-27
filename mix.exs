@@ -4,7 +4,7 @@ defmodule PlantidDiscordBot.MixProject do
   def project do
     [
       app: :plantid_discord_bot,
-      version: "0.1.0",
+      version: "0.1.1",
       elixir: "~> 1.16",
       start_permanent: Mix.env() == :prod,
       deps: deps()
@@ -29,6 +29,8 @@ defmodule PlantidDiscordBot.MixProject do
       {:httpoison, "~> 2.2"},
       {:image, "~> 0.55"},
       {:jason, "~> 1.4"},
+      {:logger_webhook_backend, "~> 0.0.2"},
+      {:plug, "~> 1.12"},
       {:plug_cowboy, "~> 2.7"},
       {:quantum, "~> 3.5"}
     ]

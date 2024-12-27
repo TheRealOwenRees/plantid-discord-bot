@@ -7,6 +7,6 @@ config :plantid_discord_bot,
 config :plantid_discord_bot, :environment, :prod
 
 config :logger,
-  backends: [{PlantIdDiscordBot.DiscordLogger, :discord_logger}]
+  backends: [{LoggerWebhookBackend, :webhook_logger}]
 
-config :logger, :discord_logger, level: :error
+config :logger, :webhook_logger, level: :error

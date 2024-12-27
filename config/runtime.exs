@@ -10,7 +10,7 @@ config :plantid_discord_bot,
 config :nostrum,
   token: System.get_env("PLANTID_DISCORD_BOT_TOKEN")
 
-config :logger, :discord_logger,
+config :logger, :webhook_logger,
   webhook_url: System.get_env("PLANTID_LOGS_DISCORD_WEBHOOK_URL"),
   level: :error,
   bot_token: System.get_env("PLANTID_DISCORD_BOT_TOKEN")
