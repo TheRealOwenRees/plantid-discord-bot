@@ -210,6 +210,72 @@ defmodule PlantNetFixtures do
     "version" => "2024-11-19 (7.3)"
   }
 
+  @plantnet_parsed_response_filtered_by_score_no_iucn %{
+    "bestMatch" => "Prunus cerasifera Ehrh.",
+    "language" => "en",
+    "preferedReferential" => "k-world-flora",
+    "query" => %{
+      "images" => [
+        "https://upload.wikimedia.org/wikipedia/commons/f/ff/Prunus_cerasifera_A.jpg",
+        "https://le-jardin-de-pascal.com/2195113-large_default/prunus-cerasifera-atropurpurea-prunier-myrobolan-nigra.jpg"
+      ],
+      "includeRelatedImages" => false,
+      "noReject" => false,
+      "organs" => ["auto", "auto"],
+      "project" => "all"
+    },
+    "remainingIdentificationRequests" => 488,
+    "results" => [
+      %{
+        "gbif" => %{"id" => "3021730"},
+        "powo" => %{"id" => "729568-1"},
+        "score" => 0.87871,
+        "species" => %{
+          "commonNames" => ["Cherry plum, myrobalan", "Cherry Plum", "Purple-leaf Plum"],
+          "family" => %{
+            "scientificName" => "Rosaceae",
+            "scientificNameAuthorship" => "",
+            "scientificNameWithoutAuthor" => "Rosaceae"
+          },
+          "genus" => %{
+            "scientificName" => "Prunus",
+            "scientificNameAuthorship" => "",
+            "scientificNameWithoutAuthor" => "Prunus"
+          },
+          "scientificName" => "Prunus cerasifera Ehrh.",
+          "scientificNameAuthorship" => "Ehrh.",
+          "scientificNameWithoutAuthor" => "Prunus cerasifera"
+        }
+      },
+      %{
+        "gbif" => %{"id" => "3022465"},
+        "powo" => %{"id" => "2959315-4"},
+        "score" => 0.31668,
+        "species" => %{
+          "commonNames" => [
+            "Dwarf red-leaf plum",
+            "Purple-leaf sand cherry",
+            "Purple-leaved sand cherry"
+          ],
+          "family" => %{
+            "scientificName" => "Rosaceae",
+            "scientificNameAuthorship" => "",
+            "scientificNameWithoutAuthor" => "Rosaceae"
+          },
+          "genus" => %{
+            "scientificName" => "Prunus",
+            "scientificNameAuthorship" => "",
+            "scientificNameWithoutAuthor" => "Prunus"
+          },
+          "scientificName" => "Prunus × cistena N.E.Hansen ex Koehne",
+          "scientificNameAuthorship" => "N.E.Hansen ex Koehne",
+          "scientificNameWithoutAuthor" => "Prunus × cistena"
+        }
+      }
+    ],
+    "version" => "2024-11-19 (7.3)"
+  }
+
   @plantnet_parsed_response_with_urls %{
     "bestMatch" => "Prunus cerasifera Ehrh.",
     "language" => "en",
@@ -283,8 +349,85 @@ defmodule PlantNetFixtures do
     "version" => "2024-11-19 (7.3)"
   }
 
+  @plantnet_parsed_response_with_urls_no_iucn %{
+    "bestMatch" => "Prunus cerasifera Ehrh.",
+    "language" => "en",
+    "preferedReferential" => "k-world-flora",
+    "query" => %{
+      "images" => [
+        "https://upload.wikimedia.org/wikipedia/commons/f/ff/Prunus_cerasifera_A.jpg",
+        "https://le-jardin-de-pascal.com/2195113-large_default/prunus-cerasifera-atropurpurea-prunier-myrobolan-nigra.jpg"
+      ],
+      "includeRelatedImages" => false,
+      "noReject" => false,
+      "organs" => ["auto", "auto"],
+      "project" => "all"
+    },
+    "remainingIdentificationRequests" => 488,
+    "results" => [
+      %{
+        "gbif" => %{"id" => "3021730"},
+        "gbif_url" => "https://www.gbif.org/species/3021730",
+        "pfaf_url" => "https://pfaf.org/user/Plant.aspx?LatinName=/Prunus+cerasifera",
+        "powo" => %{"id" => "729568-1"},
+        "powo_url" => "https://powo.science.kew.org/taxon/729568-1",
+        "score" => 0.87871,
+        "species" => %{
+          "commonNames" => ["Cherry plum, myrobalan", "Cherry Plum", "Purple-leaf Plum"],
+          "family" => %{
+            "scientificName" => "Rosaceae",
+            "scientificNameAuthorship" => "",
+            "scientificNameWithoutAuthor" => "Rosaceae"
+          },
+          "genus" => %{
+            "scientificName" => "Prunus",
+            "scientificNameAuthorship" => "",
+            "scientificNameWithoutAuthor" => "Prunus"
+          },
+          "scientificName" => "Prunus cerasifera Ehrh.",
+          "scientificNameAuthorship" => "Ehrh.",
+          "scientificNameWithoutAuthor" => "Prunus cerasifera"
+        }
+      },
+      %{
+        "gbif" => %{"id" => "3022465"},
+        "gbif_url" => "https://www.gbif.org/species/3022465",
+        "pfaf_url" => "https://pfaf.org/user/Plant.aspx?LatinName=/Prunus+×+cistena",
+        "powo" => %{"id" => "2959315-4"},
+        "powo_url" => "https://powo.science.kew.org/taxon/2959315-4",
+        "score" => 0.31668,
+        "species" => %{
+          "commonNames" => [
+            "Dwarf red-leaf plum",
+            "Purple-leaf sand cherry",
+            "Purple-leaved sand cherry"
+          ],
+          "family" => %{
+            "scientificName" => "Rosaceae",
+            "scientificNameAuthorship" => "",
+            "scientificNameWithoutAuthor" => "Rosaceae"
+          },
+          "genus" => %{
+            "scientificName" => "Prunus",
+            "scientificNameAuthorship" => "",
+            "scientificNameWithoutAuthor" => "Prunus"
+          },
+          "scientificName" => "Prunus × cistena N.E.Hansen ex Koehne",
+          "scientificNameAuthorship" => "N.E.Hansen ex Koehne",
+          "scientificNameWithoutAuthor" => "Prunus × cistena"
+        }
+      }
+    ],
+    "version" => "2024-11-19 (7.3)"
+  }
+
   def raw_response, do: @plantnet_raw_response
   def parsed_response, do: @plantnet_parsed_response
   def parsed_response_filtered_by_score, do: @plantnet_parsed_response_filtered_by_score
   def parsed_response_with_urls, do: @plantnet_parsed_response_with_urls
+
+  def plantnet_parsed_response_filtered_by_score_no_iucn,
+    do: @plantnet_parsed_response_filtered_by_score_no_iucn
+
+  def parsed_response_with_urls_no_iucn, do: @plantnet_parsed_response_with_urls_no_iucn
 end

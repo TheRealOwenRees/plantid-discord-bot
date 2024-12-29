@@ -26,4 +26,12 @@ defmodule PlantIdDiscordBotTest.PlantNet.Parser do
 
     assert result == PlantNetFixtures.parsed_response_with_urls()
   end
+
+  test "no iucn data prevents 'Threat Status' from being show in response message" do
+    message =
+      PlantNetFixtures.parsed_response_with_urls_no_iucn()
+      |> Parser.generate_response_message()
+
+    refute String.contains?(message, "Threat status: ")
+  end
 end
