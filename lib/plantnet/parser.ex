@@ -82,15 +82,7 @@ defmodule PlantIdDiscordBot.PlantNet.Parser do
     best_result_iucn_category = best_result["iucn"]["category"]
     score = round(best_result["score"] * 100) |> Integer.to_string()
 
-    """
-    My best guess is **#{best_guess_name}** with a confidence of **#{score}%**. Common names include **#{Enum.join(best_result["species"]["commonNames"], ", ")}**.
-
-    [GBIF](<#{best_result["gbif_url"]}>) | [PFAF](<#{best_result["pfaf_url"]}>) | [POWO](<#{best_result["powo_url"]}>)
-
-    #{if best_result_iucn_category, do: "Threat status: #{best_result_iucn_category}", else: ""}
-
-    #{get_alternatives(other_results)}
-    """
+    "My best guess is **#{best_guess_name}** with a confidence of **#{score}%**. Common names include **#{Enum.join(best_result["species"]["commonNames"], ", ")}**.\n\n[GBIF](<#{best_result["gbif_url"]}>) | [PFAF](<#{best_result["pfaf_url"]}>) | [POWO](<#{best_result["powo_url"]}>)#{if best_result_iucn_category, do: "\n\nThreat status: #{best_result_iucn_category}"}#{get_alternatives(other_results)}"
   end
 
   @spec generate_gbif_url(map()) :: map()
@@ -122,13 +114,13 @@ defmodule PlantIdDiscordBot.PlantNet.Parser do
 
   defp get_alternatives(data) do
     if length(data) === 0 do
-      "No alternatives found."
+      "\n\nNo alternatives found."
     else
       alternatives =
         Enum.map(data, & &1["species"]["scientificNameWithoutAuthor"])
         |> Enum.join(", ")
 
-      "Alternatives include **#{alternatives}**."
+      "\n\nAlternatives include **#{alternatives}**."
     end
   end
 end
