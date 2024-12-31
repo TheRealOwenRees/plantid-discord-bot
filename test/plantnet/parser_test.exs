@@ -34,4 +34,24 @@ defmodule PlantIdDiscordBotTest.PlantNet.Parser do
 
     refute String.contains?(message, "Threat status: ")
   end
+
+  describe "message paragraph spacing" do
+    test "iucn data plus alternatives" do
+      message =
+        PlantNetFixtures.parsed_response_with_urls()
+        |> Parser.generate_response_message()
+
+      assert message ==
+               "My best guess is **Prunus cerasifera** with a confidence of **88%**. Common names include **Cherry plum, myrobalan, Cherry Plum, Purple-leaf Plum**.\n\n[GBIF](<https://www.gbif.org/species/3021730>) | [PFAF](<https://pfaf.org/user/Plant.aspx?LatinName=/Prunus+cerasifera>) | [POWO](<https://powo.science.kew.org/taxon/729568-1>)\n\nThreat status: DD\n\nAlternatives include **Prunus × cistena**."
+    end
+
+    test "no iucn data" do
+      message =
+        PlantNetFixtures.parsed_response_with_urls_no_iucn()
+        |> Parser.generate_response_message()
+
+      assert message ==
+               "My best guess is **Prunus cerasifera** with a confidence of **88%**. Common names include **Cherry plum, myrobalan, Cherry Plum, Purple-leaf Plum**.\n\n[GBIF](<https://www.gbif.org/species/3021730>) | [PFAF](<https://pfaf.org/user/Plant.aspx?LatinName=/Prunus+cerasifera>) | [POWO](<https://powo.science.kew.org/taxon/729568-1>)\n\nAlternatives include **Prunus × cistena**."
+    end
+  end
 end
