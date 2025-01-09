@@ -1,10 +1,12 @@
 defmodule PlantIdDiscordBot.Cog.PlantNet do
   require Logger
   use Nostrum.Consumer
+  alias Nostrum.Api
+  alias Nostrum.Cache.GuildCache
   alias PlantIdDiscordBot.RateLimiter
   alias PlantIdDiscordBot.PlantNet.Parser
   alias PlantIdDiscordBot.FileServer.File
-  alias Nostrum.Api
+  alias PlantIdDiscordBot.Metrics
 
   @api Application.compile_env(:plantid_discord_bot, :api)
   @plantnet_api_base_url Application.compile_env(:plantid_discord_bot, :plantnet_api_base_url)
@@ -110,7 +112,12 @@ defmodule PlantIdDiscordBot.Cog.PlantNet do
     case HTTPoison.get(query_uri) do
       {:ok, %HTTPoison.Response{status_code: 200, body: body}} ->
         response_message = Parser.parse(body)
-        RateLimiter.increase_counter(interaction.guild_id)
+
+        guild_id = interaction.guild_id
+        {:ok, %{name: guild_name}} = GuildCache.get(guild_id)
+
+        RateLimiter.increase_counter(guild_id)
+        Metrics.put(guild_id, guild_name)
 
         Api.create_followup_message(interaction.application_id, interaction.token, %{
           content: response_message <> "\n#{original_images}"
@@ -129,7 +136,11 @@ defmodule PlantIdDiscordBot.Cog.PlantNet do
         })
 
       {:ok, %HTTPoison.Response{status_code: 404}} ->
-        RateLimiter.increase_counter(interaction.guild_id)
+        guild_id = interaction.guild_id
+        {:ok, %{name: guild_name}} = GuildCache.get(guild_id)
+
+        RateLimiter.increase_counter(guild_id)
+        Metrics.put(guild_id, guild_name)
 
         Api.create_followup_message(interaction.application_id, interaction.token, %{
           content: "Species Not Found"
