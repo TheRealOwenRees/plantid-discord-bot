@@ -1,6 +1,7 @@
 **0.1.3**
 
 - Typo corrections in README.md
+- Metrics as state, written to disk every hour
 
 **0.1.2**
 

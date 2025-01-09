@@ -25,5 +25,6 @@ plantid_discord_bot-*.tar
 # Temporary files, for example, from tests.
 /tmp/
 
-# Ignore the static files directory
+# Ignore specific priv subdirectories
 priv/static/
+priv/metrics/
