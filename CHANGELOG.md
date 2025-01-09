@@ -1,3 +1,7 @@
+**0.1.3**
+
+- Typo corrections in README.md
+
 **0.1.2**
 
 - bug fixes around `Threat Status`, choosing to not display when no IUCU data is available

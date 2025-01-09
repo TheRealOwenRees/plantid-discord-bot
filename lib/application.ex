@@ -4,8 +4,10 @@ defmodule PlantIdDiscordBot.Application do
   @impl true
   def start(_type, _args) do
     children = [
+      PlantIdDiscordBot.ProcessRegistry,
       PlantIdDiscordBot.Consumer,
       PlantIdDiscordBot.RateLimiter,
+      {PlantIdDiscordBot.Metrics, []},
       PlantIdDiscordBot.Scheduler,
       {Plug.Cowboy,
        scheme: :http,
