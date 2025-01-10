@@ -32,7 +32,8 @@ defmodule PlantIdDiscordBot.Cog.PlantNetMessage do
   def do_identification(message) do
     saved_images =
       try do
-        Enum.map(message.attachments, fn attachment -> attachment.url end)
+        Enum.take(message.attachments, 5)
+        |> Enum.map(fn attachment -> attachment.url end)
         |> File.download_and_save_files!()
       rescue
         e in ArgumentError ->
