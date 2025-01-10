@@ -4,7 +4,7 @@ defmodule PlantidDiscordBot.MixProject do
   def project do
     [
       app: :plantid_discord_bot,
-      version: "0.2.0-alpha",
+      version: "0.2.0",
       elixir: "~> 1.16",
       start_permanent: Mix.env() == :prod,
       deps: deps()

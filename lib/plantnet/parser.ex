@@ -82,7 +82,7 @@ defmodule PlantIdDiscordBot.PlantNet.Parser do
     best_result_iucn_category = best_result["iucn"]["category"]
     score = round(best_result["score"] * 100) |> Integer.to_string()
 
-    "My best guess is **#{best_guess_name}** with a confidence of **#{score}%**. Common names include **#{Enum.join(best_result["species"]["commonNames"], ", ")}**.\n\n[GBIF](<#{best_result["gbif_url"]}>) | [PFAF](<#{best_result["pfaf_url"]}>) | [POWO](<#{best_result["powo_url"]}>)#{if best_result_iucn_category, do: "\n\nThreat status: #{best_result_iucn_category}"}#{get_alternatives(other_results)}"
+    "My best guess is **#{best_guess_name}** with a confidence of **#{score}%**. Common names include **#{Enum.join(best_result["species"]["commonNames"], ", ")}**.\n\nSpecies info from plant databases:\n[GBIF](<#{best_result["gbif_url"]}>) | [PFAF](<#{best_result["pfaf_url"]}>) | [POWO](<#{best_result["powo_url"]}>)#{if best_result_iucn_category, do: "\n\nThreat status: #{best_result_iucn_category}"}#{get_alternatives(other_results)}"
   end
 
   @spec generate_gbif_url(map()) :: map()

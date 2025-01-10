@@ -1,6 +1,8 @@
-**0.2.0-alpha**
+**0.2.0**
 
 - Implemented the ability to ID attachments without using application commands
+- Wording changes for plant database links
+- `Threat Status` changed to `Conservation Status`
 
 **0.1.4**
 
