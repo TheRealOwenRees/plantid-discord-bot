@@ -27,12 +27,12 @@ defmodule PlantIdDiscordBotTest.PlantNet.Parser do
     assert result == PlantNetFixtures.parsed_response_with_urls()
   end
 
-  test "no iucn data prevents 'Threat Status' from being shown in response message" do
+  test "no iucn data prevents 'Conservation Status' from being shown in response message" do
     message =
       PlantNetFixtures.parsed_response_with_urls_no_iucn()
       |> Parser.generate_response_message()
 
-    refute String.contains?(message, "Threat status: ")
+    refute String.contains?(message, "Conservation status: ")
   end
 
   describe "message paragraph spacing" do
@@ -42,7 +42,7 @@ defmodule PlantIdDiscordBotTest.PlantNet.Parser do
         |> Parser.generate_response_message()
 
       assert message ==
-               "My best guess is **Prunus cerasifera** with a confidence of **88%**. Common names include **Cherry plum, myrobalan, Cherry Plum, Purple-leaf Plum**.\n\n[GBIF](<https://www.gbif.org/species/3021730>) | [PFAF](<https://pfaf.org/user/Plant.aspx?LatinName=/Prunus+cerasifera>) | [POWO](<https://powo.science.kew.org/taxon/729568-1>)\n\nThreat status: DD\n\nAlternatives include **Prunus × cistena**."
+               "My best guess is **Prunus cerasifera** with a confidence of **88%**. Common names include **Cherry plum, myrobalan, Cherry Plum, Purple-leaf Plum**.\n\nSpecies info from plant databases:\n[GBIF](<https://www.gbif.org/species/3021730>) | [PFAF](<https://pfaf.org/user/Plant.aspx?LatinName=/Prunus+cerasifera>) | [POWO](<https://powo.science.kew.org/taxon/729568-1>)\n\nConservation status: Data Deficient\n\nAlternatives include **Prunus × cistena**."
     end
 
     test "no iucn data" do
@@ -51,7 +51,7 @@ defmodule PlantIdDiscordBotTest.PlantNet.Parser do
         |> Parser.generate_response_message()
 
       assert message ==
-               "My best guess is **Prunus cerasifera** with a confidence of **88%**. Common names include **Cherry plum, myrobalan, Cherry Plum, Purple-leaf Plum**.\n\n[GBIF](<https://www.gbif.org/species/3021730>) | [PFAF](<https://pfaf.org/user/Plant.aspx?LatinName=/Prunus+cerasifera>) | [POWO](<https://powo.science.kew.org/taxon/729568-1>)\n\nAlternatives include **Prunus × cistena**."
+               "My best guess is **Prunus cerasifera** with a confidence of **88%**. Common names include **Cherry plum, myrobalan, Cherry Plum, Purple-leaf Plum**.\n\nSpecies info from plant databases:\n[GBIF](<https://www.gbif.org/species/3021730>) | [PFAF](<https://pfaf.org/user/Plant.aspx?LatinName=/Prunus+cerasifera>) | [POWO](<https://powo.science.kew.org/taxon/729568-1>)\n\nAlternatives include **Prunus × cistena**."
     end
   end
 end
