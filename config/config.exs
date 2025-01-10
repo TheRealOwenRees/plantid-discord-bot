@@ -11,7 +11,8 @@ config :plantid_discord_bot,
     "https://discord.com/api/oauth2/authorize?client_id=948227126094598204&permissions=19520&scope=bot"
 
 config :nostrum,
-  ffmpeg: nil
+  ffmpeg: nil,
+  gateway_intents: [:guilds, :guild_messages, :message_content]
 
 config :plantid_discord_bot, PlantIdDiscordBot.Scheduler,
   jobs: [
