@@ -70,10 +70,17 @@ jobs:
             export PLANTID_DISCORD_BOT_TOKEN=${{ secrets.PLANTID_DISCORD_BOT_TOKEN }}
             export PLANTID_FILESERVER_URL=${{ secrets.PLANTID_FILESERVER_URL }}
             cd /home/${{ secrets.USERNAME }}/plantid_discord_bot
+            # extract artifacts
             tar -xzf release.tar.gz
+            # save metrics and stop the bot
+            current_release/bin/plantid_discord_bot rpc "PlantidDiscordBot.Metrics.write()"
             current_release/bin/plantid_discord_bot stop || true
+            # switch releases
             rm -rf old_release
             mv current_release old_release || true
             mv plantid_discord_bot current_release
+            # copy metrics from previous release to current release
+            mkdir -p current_release/priv/metrics
+            cp -r old_release/priv/metrics/* current_release/priv/metrics/ 2>/dev/null || true
             current_release/bin/plantid_discord_bot daemon
             rm -f release.tar.gz
