@@ -7,6 +7,8 @@ defmodule PlantIdDiscordBot.Metrics do
   defstruct [
     :guild_id,
     :guild_name,
+    :first_request_at,
+    :last_request_at,
     :total_requests
   ]
 
@@ -47,13 +49,16 @@ defmodule PlantIdDiscordBot.Metrics do
           Map.put(state, guild_id, %Metrics{
             guild_id: guild_id,
             guild_name: guild_name,
+            first_request_at: DateTime.utc_now(),
+            last_request_at: DateTime.utc_now(),
             total_requests: 1
           })
 
         existing ->
           Map.put(state, guild_id, %Metrics{
             existing
-            | total_requests: existing.total_requests + 1
+            | last_request_at: DateTime.utc_now(),
+              total_requests: existing.total_requests + 1
           })
       end
     end)

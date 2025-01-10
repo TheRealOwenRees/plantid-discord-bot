@@ -1,3 +1,7 @@
+**0.1.4**
+
+- Added first and last request date to metrics
+
 **0.1.3**
 
 - Typo corrections in README.md
