@@ -129,9 +129,7 @@ defmodule PlantIdDiscordBot.PlantNet.Parser do
   end
 
   defp get_alternatives(data) do
-    if length(data) === 0 do
-      "\n\nNo alternatives found."
-    else
+    if length(data) > 0 do
       alternatives =
         Enum.map(data, & &1["species"]["scientificNameWithoutAuthor"])
         |> Enum.join(", ")
