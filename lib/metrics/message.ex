@@ -1,6 +1,4 @@
 defmodule PlantIdDiscordBot.Metrics.Message do
-  @webhook_url Application.compile_env(:plantid_discord_bot, :metrics_webhook_url)
-
   def start() do
     PlantIdDiscordBot.Metrics.get_all()
     |> format_message()
@@ -33,12 +31,14 @@ defmodule PlantIdDiscordBot.Metrics.Message do
   end
 
   def send_message(data) do
+    webhook_url = Application.get_env(:plantid_discord_bot, :metrics_webhook_url)
+
     body = Jason.encode!(data)
 
     headers = [
       {"Content-Type", "application/json"}
     ]
 
-    HTTPoison.post!(@webhook_url, body, headers)
+    HTTPoison.post!(webhook_url, body, headers)
   end
 end
