@@ -82,7 +82,7 @@ defmodule PlantIdDiscordBot.PlantNet.Parser do
     best_result_iucn_category = best_result["iucn"]["category"]
     score = round(best_result["score"] * 100) |> Integer.to_string()
 
-    "My best guess is **#{best_guess_name}** with a confidence of **#{score}%**. Common names include **#{Enum.join(best_result["species"]["commonNames"], ", ")}**.\n\nSpecies info from plant databases:\n[GBIF](<#{best_result["gbif_url"]}>) | [PFAF](<#{best_result["pfaf_url"]}>) | [POWO](<#{best_result["powo_url"]}>)#{if best_result_iucn_category, do: "\n\nThreat status: #{best_result_iucn_category}"}#{get_alternatives(other_results)}"
+    "My best guess is **#{best_guess_name}** with a confidence of **#{score}%**. Common names include **#{Enum.join(best_result["species"]["commonNames"], ", ")}**.\n\nSpecies info from plant databases:\n[GBIF](<#{best_result["gbif_url"]}>) | [PFAF](<#{best_result["pfaf_url"]}>) | [POWO](<#{best_result["powo_url"]}>)#{if best_result_iucn_category, do: "\n\nConservation status: #{iucn_parser(best_result_iucn_category)}"}#{get_alternatives(other_results)}"
   end
 
   @spec generate_gbif_url(map()) :: map()
@@ -110,6 +110,22 @@ defmodule PlantIdDiscordBot.PlantNet.Parser do
       powo_id = result["powo"]["id"]
       if powo_id, do: Map.put(result, "powo_url", "#{@powo_base_url}/#{powo_id}"), else: result
     end)
+  end
+
+  @spec get_alternatives(map()) :: String.t()
+  defp iucn_parser(abbreviation) do
+    case abbreviation do
+      "DD" -> "Data Deficient"
+      "LC" -> "Least Concern"
+      "NT" -> "Near Threatened"
+      "VU" -> "Vulnerable"
+      "EN" -> "Endangered"
+      "CR" -> "Critically Endangered"
+      "EW" -> "Extinct in the Wild"
+      "EX" -> "Extinct"
+      "NE" -> "Not Evaluated"
+      _ -> "Unknown"
+    end
   end
 
   defp get_alternatives(data) do
