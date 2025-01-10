@@ -1,3 +1,7 @@
+**0.2.1**
+
+- Removed `No alternatives found` text
+
 **0.2.0**
 
 - Implemented the ability to ID attachments without using application commands
