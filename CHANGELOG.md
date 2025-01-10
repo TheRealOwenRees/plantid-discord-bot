@@ -1,3 +1,7 @@
+**0.2.0-alpha**
+
+- Implemented the ability to ID attachments without using application commands
+
 **0.1.4**
 
 - Added first and last request date to metrics
