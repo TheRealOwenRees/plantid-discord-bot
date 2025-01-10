@@ -101,7 +101,7 @@ defmodule PlantIdDiscordBot.Cog.PlantNetMessage do
         RateLimiter.increase_counter(guild_id)
         Metrics.put(guild_id, guild_name)
 
-        Api.create_message(message.application_id,
+        Api.create_message(message.channel_id,
           content: "Species Not Found",
           message_reference: %{message_id: message.id}
         )
@@ -109,7 +109,7 @@ defmodule PlantIdDiscordBot.Cog.PlantNetMessage do
       {:ok, %HTTPoison.Response{status_code: 429}} ->
         Logger.warning("Request limit exceeded for the PlantNet API")
 
-        Api.create_message(message.application_id,
+        Api.create_message(message.channel_id,
           content: "Too Many Requests",
           message_reference: %{message_id: message.id}
         )
@@ -117,7 +117,7 @@ defmodule PlantIdDiscordBot.Cog.PlantNetMessage do
       {_, _} ->
         Logger.error("Internal server error when contacting the PlantNet API")
 
-        Api.create_message(message.application_id,
+        Api.create_message(message.channel_id,
           content: "Internal Server Error",
           message_reference: %{message_id: message.id}
         )
