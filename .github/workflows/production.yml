@@ -73,7 +73,7 @@ jobs:
             # extract artifacts
             tar -xzf release.tar.gz
             # save metrics and stop the bot
-            current_release/bin/plantid_discord_bot rpc "PlantidDiscordBot.Metrics.write()"
+            current_release/bin/plantid_discord_bot rpc "PlantidDiscordBot.Metrics.backup()"
             current_release/bin/plantid_discord_bot stop || true
             # switch releases
             rm -rf old_release
