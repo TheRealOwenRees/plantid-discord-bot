@@ -67,4 +67,9 @@ defmodule PlantIdDiscordBot.RateLimiter do
     :ets.delete_all_objects(__MODULE__)
     Logger.debug("Reset all guilds counters")
   end
+
+  @spec to_list() :: list()
+  def to_list() do
+    :ets.tab2list(__MODULE__)
+  end
 end
