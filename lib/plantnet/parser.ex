@@ -116,7 +116,7 @@ defmodule PlantIdDiscordBot.PlantNet.Parser do
   defp get_common_names(data) do
     common_names = data["species"]["commonNames"]
 
-    if length(common_names) > 0 do
+    if is_list(common_names) && not Enum.empty?(common_names) do
       " Common names include **" <>
         Enum.join(common_names, ", ") <> "**."
     end
