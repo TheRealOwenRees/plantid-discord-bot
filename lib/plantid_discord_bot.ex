@@ -11,7 +11,7 @@ defmodule PlantIdDiscordBot.Consumer do
 
   def handle_event({:READY, _data, _ws_state}) do
     Api.create_global_application_command(@global_application_commands)
-    Api.update_status(:online, %{name: "Guess the Plant | /help", type: 0})
+    Api.update_status(:online, "Guess the Plant | /help")
   end
 
   def handle_event({:INTERACTION_CREATE, %{data: %{name: command}} = interaction, _ws_state}) do
