@@ -4,6 +4,12 @@ defmodule PlantIdDiscordBot.RateLimiter do
 
   @request_limit Application.compile_env(:plantid_discord_bot, :guild_request_limit_per_day)
 
+  @custom_limits %{
+    1_002_507_312_159_797_318 => 100,
+    689_135_063_849_500_726 => 50,
+    900_886_202_226_462_730 => 50
+  }
+
   def start_link(_) do
     GenServer.start_link(__MODULE__, nil, name: __MODULE__)
   end

@@ -3,7 +3,7 @@ import Config
 config :plantid_discord_bot,
   max_results: 5,
   score_threshold: 0.3,
-  guild_request_limit_per_day: 20,
+  guild_request_limit_per_day: 10,
   image_path: "priv/static",
   plantnet_api_base_url: "https://my-api.plantnet.org/v2",
   source: "https://github.com/TheRealOwenRees/plantid-discord-bot",
