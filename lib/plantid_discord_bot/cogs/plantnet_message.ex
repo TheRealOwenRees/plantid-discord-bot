@@ -17,14 +17,14 @@ defmodule PlantIdDiscordBot.Cog.PlantNetMessage do
     IO.inspect(message)
 
     case RateLimiter.check_limit(message.guild_id) do
-      {:limit_exceeded, _} ->
+      {:limit_exceeded, _requests_used, _requests_limit} ->
         Api.create_message(message.channel_id,
           content:
             "This server has exceeded its allowed requests in 24 hours. Please try again tomorrow.",
           message_reference: %{message_id: message.id}
         )
 
-      {:ok, _} ->
+      {:ok, _requests_used, _requests_limit} ->
         do_identification(message)
     end
   end

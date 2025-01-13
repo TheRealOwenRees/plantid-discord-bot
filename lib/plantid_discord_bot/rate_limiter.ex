@@ -2,7 +2,10 @@ defmodule PlantIdDiscordBot.RateLimiter do
   use GenServer
   require Logger
 
-  @request_limit Application.compile_env(:plantid_discord_bot, :guild_request_limit_per_day)
+  @default_request_limit Application.compile_env(
+                           :plantid_discord_bot,
+                           :guild_request_limit_per_day
+                         )
 
   @custom_limits %{
     1_002_507_312_159_797_318 => 100,
@@ -34,19 +37,26 @@ defmodule PlantIdDiscordBot.RateLimiter do
   @doc """
   Check if the number of requests for a guild exceeds the limit.
   """
-  @spec check_limit(String.t()) :: {:ok, integer()} | {:limit_exceeded, integer()}
+  @spec check_limit(String.t() | integer()) :: {:ok, integer()} | {:limit_exceeded, integer()}
   def check_limit(guild_id) do
+    request_limit =
+      case guild_id in Map.keys(@custom_limits) do
+        true -> @custom_limits[guild_id]
+        _ -> @default_request_limit
+      end
+
     case get(guild_id) do
       {:ok, value} ->
-        if value >= @request_limit do
-          {:limit_exceeded, value}
+        if value >= request_limit do
+          {:limit_exceeded, value, request_limit}
         else
-          {:ok, value}
+          {:ok, value, request_limit}
         end
 
       {:error, _} ->
         put(guild_id, 0)
-        {:ok, 0}
+        Logger.debug("Set counter for guild #{guild_id} to 0")
+        {:ok, 0, request_limit}
     end
   end
 
