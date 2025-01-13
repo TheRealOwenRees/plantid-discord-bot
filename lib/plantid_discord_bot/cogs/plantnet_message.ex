@@ -80,7 +80,7 @@ defmodule PlantIdDiscordBot.Cog.PlantNetMessage do
         response_message = Parser.parse(body)
 
         RateLimiter.increase_counter(guild_id)
-        Metrics.put(guild_id, guild_name)
+        Metrics.increase_request_count(guild_id, guild_name)
 
         # Nostrum.Api.create_message/2 is deprecated but the new function is not available in v0.10 of the library
         # Nostrum.Api.message/2 will be the new function
@@ -99,7 +99,7 @@ defmodule PlantIdDiscordBot.Cog.PlantNetMessage do
 
       {:ok, %HTTPoison.Response{status_code: 404}} ->
         RateLimiter.increase_counter(guild_id)
-        Metrics.put(guild_id, guild_name)
+        Metrics.increase_request_count(guild_id, guild_name)
 
         Api.create_message(message.channel_id,
           content: "Species Not Found",

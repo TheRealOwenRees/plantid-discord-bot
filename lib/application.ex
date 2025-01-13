@@ -7,7 +7,7 @@ defmodule PlantIdDiscordBot.Application do
       PlantIdDiscordBot.ProcessRegistry,
       PlantIdDiscordBot.Consumer,
       PlantIdDiscordBot.RateLimiter,
-      {PlantIdDiscordBot.Metrics, []},
+      {PlantIdDiscordBot.Metrics.Requests, []},
       PlantIdDiscordBot.Scheduler,
       {Plug.Cowboy,
        scheme: :http,

@@ -17,8 +17,8 @@ config :nostrum,
 config :plantid_discord_bot, PlantIdDiscordBot.Scheduler,
   jobs: [
     {"@daily", {PlantIdDiscordBot.RateLimiter, :reset_counters, []}},
-    {"@hourly", {PlantIdDiscordBot.Metrics, :write, []}},
-    {"0 8 * * *", {PlantIdDiscordBot.Metrics.Message, :start, []}}
+    {"@hourly", {PlantIdDiscordBot.Metrics, :backup, []}},
+    {"0 8 * * *", {PlantIdDiscordBot.Metrics.Message, :send, []}}
   ]
 
 import_config "#{config_env()}.exs"

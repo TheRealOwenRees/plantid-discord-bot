@@ -117,7 +117,7 @@ defmodule PlantIdDiscordBot.Cog.PlantNet do
         {:ok, %{name: guild_name}} = GuildCache.get(guild_id)
 
         RateLimiter.increase_counter(guild_id)
-        Metrics.put(guild_id, guild_name)
+        Metrics.increase_request_count(guild_id, guild_name)
 
         Api.create_followup_message(interaction.application_id, interaction.token, %{
           content: response_message <> "\n#{original_images}"
@@ -140,7 +140,7 @@ defmodule PlantIdDiscordBot.Cog.PlantNet do
         {:ok, %{name: guild_name}} = GuildCache.get(guild_id)
 
         RateLimiter.increase_counter(guild_id)
-        Metrics.put(guild_id, guild_name)
+        Metrics.increase_request_count(guild_id, guild_name)
 
         Api.create_followup_message(interaction.application_id, interaction.token, %{
           content: "Species Not Found"
