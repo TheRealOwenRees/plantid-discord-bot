@@ -53,5 +53,14 @@ defmodule PlantIdDiscordBotTest.PlantNet.Parser do
       assert message ==
                "My best guess is **Prunus cerasifera** with a confidence of **88%**. Common names include **Cherry plum, myrobalan, Cherry Plum, Purple-leaf Plum**.\n\nSpecies info from plant databases:\n[GBIF](<https://www.gbif.org/species/3021730>) | [PFAF](<https://pfaf.org/user/Plant.aspx?LatinName=/Prunus+cerasifera>) | [POWO](<https://powo.science.kew.org/taxon/729568-1>)\n\nAlternatives include **Prunus × cistena**."
     end
+
+    test "no common names" do
+      message =
+        PlantNetFixtures.parsed_response_with_urls_no_alternatives()
+        |> Parser.generate_response_message()
+
+      assert message ==
+               "My best guess is **Prunus cerasifera** with a confidence of **88%**.\n\nSpecies info from plant databases:\n[GBIF](<https://www.gbif.org/species/3021730>) | [PFAF](<https://pfaf.org/user/Plant.aspx?LatinName=/Prunus+cerasifera>) | [POWO](<https://powo.science.kew.org/taxon/729568-1>)\n\nConservation status: Data Deficient\n\nAlternatives include **Prunus × cistena**."
+    end
   end
 end
