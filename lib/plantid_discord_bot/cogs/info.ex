@@ -35,11 +35,11 @@ defmodule PlantIdDiscordBot.Cog.Info do
     embed =
       %Nostrum.Struct.Embed{}
       |> put_title("Let's break this down a bit")
-      |> put_description("Use the `/id` command and add up to 5 photos\n\n")
+      |> put_description("Upload up to 5 photos into the channel where the bot lives.\n\n")
       |> put_author(
         "Plant ID Bot",
-        "https://discordapp.com",
-        "https://cdn.discordapp.com/embed/avatars/0.png"
+        "https://my.plantnet.org/",
+        "https://www.iona.edu/sites/default/files/2021-04/ancillary-images/green-flower.jpg"
       )
       |> put_footer(
         "Powered by Pl@ntNet API",

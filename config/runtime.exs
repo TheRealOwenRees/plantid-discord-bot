@@ -2,7 +2,7 @@ import Config
 
 config :plantid_discord_bot,
   start_time: DateTime.utc_now(),
-  guild_ids: [],
+  guild_ids: [1_002_507_312_159_797_318],
   api: Nostrum.Api,
   plantnet_api_key: System.get_env("PLANTNET_API_KEY"),
   fileserver_url: System.get_env("PLANTID_FILESERVER_URL", "http://localhost:4321"),
