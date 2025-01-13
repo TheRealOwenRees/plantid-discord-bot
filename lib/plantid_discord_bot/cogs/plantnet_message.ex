@@ -14,8 +14,6 @@ defmodule PlantIdDiscordBot.Cog.PlantNetMessage do
   @max_results Application.compile_env(:plantid_discord_bot, :max_results)
 
   def id(message) do
-    IO.inspect(message)
-
     case RateLimiter.check_limit(message.guild_id) do
       {:limit_exceeded, _requests_used, _requests_limit} ->
         Api.create_message(message.channel_id,
@@ -58,10 +56,7 @@ defmodule PlantIdDiscordBot.Cog.PlantNetMessage do
 
   defp prepare_images(saved_images) do
     case Application.get_env(:plantid_discord_bot, :environment) do
-      :test ->
-        PlantIdDiscordBotTest.Mocks.PlantNet.Images.images()
-
-      :dev ->
+      env when env in [:test, :dev] ->
         PlantIdDiscordBotTest.Mocks.PlantNet.Images.images()
 
       _ ->
@@ -75,7 +70,7 @@ defmodule PlantIdDiscordBot.Cog.PlantNetMessage do
     guild_id = message.guild_id
     {:ok, %{name: guild_name}} = GuildCache.get(guild_id)
 
-    case HTTPoison.get(query_uri) do
+    case HTTPoison.get!(query_uri) do
       {:ok, %HTTPoison.Response{status_code: 200, body: body}} ->
         response_message = Parser.parse(body)
 
