@@ -47,7 +47,11 @@ defmodule PlantIdDiscordBot.Cog.PlantNetMessage do
       rescue
         e ->
           Logger.error(Exception.format(:error, e, __STACKTRACE__))
-          Api.create_message(message.channel_id, "An error occurred. This error has been logged.")
+
+          Api.create_message(
+            message.channel_id,
+            "The image(s) could not be used. Please make sure that the plant's organs are in focus, and that the image is at least 800x800 pixels."
+          )
       after
         cleanup_saved_images(saved_images)
       end
