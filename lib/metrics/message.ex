@@ -1,11 +1,11 @@
 defmodule PlantIdDiscordBot.Metrics.Message do
-  def start() do
-    PlantIdDiscordBot.Metrics.get_all()
+  def send() do
+    PlantIdDiscordBot.Metrics.requests()
     |> format_message()
-    |> send_message()
+    |> do_send_message()
   end
 
-  def format_message(data) do
+  defp format_message(data) do
     embeds =
       Enum.map(data, fn {guild_id, metrics} ->
         first_request_at =
@@ -30,15 +30,10 @@ defmodule PlantIdDiscordBot.Metrics.Message do
     %{embeds: embeds}
   end
 
-  def send_message(data) do
+  defp do_send_message(data) do
     webhook_url = Application.get_env(:plantid_discord_bot, :metrics_webhook_url)
-
     body = Jason.encode!(data)
-
-    headers = [
-      {"Content-Type", "application/json"}
-    ]
-
+    headers = [{"Content-Type", "application/json"}]
     HTTPoison.post!(webhook_url, body, headers)
   end
 end
