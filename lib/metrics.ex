@@ -1,4 +1,7 @@
 defmodule PlantIdDiscordBot.Metrics do
+  @moduledoc """
+  API for managing metrics for the bot.
+  """
   alias PlantIdDiscordBot.Metrics.Requests
   alias PlantIdDiscordBot.RateLimiter
 
