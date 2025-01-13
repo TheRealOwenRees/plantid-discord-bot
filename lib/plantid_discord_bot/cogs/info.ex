@@ -47,7 +47,7 @@ defmodule PlantIdDiscordBot.Cog.Info do
       )
       |> put_field(
         "For best results:",
-        "- all photos should be of the same plant\n- take photos of organs, not the whole plant\n- best results will be achieved by using a mixture of organs\n- use images at least 600x600px\n\n",
+        "- all photos should be of the same plant\n- take photos of organs, not the whole plant\n- best results will be achieved by using a mixture of organs\n- use images at least 800x800px\n\n",
         true
       )
       |> put_field("/info", "for more commands")
