@@ -74,7 +74,7 @@ defmodule PlantIdDiscordBot.Cog.PlantNetMessage do
     guild_id = message.guild_id
     {:ok, %{name: guild_name}} = GuildCache.get(guild_id)
 
-    case HTTPoison.get!(query_uri) do
+    case HTTPoison.get(query_uri) do
       {:ok, %HTTPoison.Response{status_code: 200, body: body}} ->
         response_message = Parser.parse(body)
 
