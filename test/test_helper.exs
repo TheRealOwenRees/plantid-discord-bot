@@ -2,7 +2,9 @@ ExUnit.start()
 
 defmodule PlantNetFixtures.Message do
   @message %{
-    guild_id: 1_002_507_312_159_797_318
+    channel_id: 1178600825380155412,
+    guild_id: 1_002_507_312_159_797_318,
+    attachments: [%{url: "http://invalid-url.com/image.jpg"}],
   }
 
   def message(), do: @message

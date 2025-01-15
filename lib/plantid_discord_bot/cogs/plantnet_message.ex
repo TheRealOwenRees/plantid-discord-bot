@@ -7,7 +7,11 @@ defmodule PlantIdDiscordBot.Cog.PlantNetMessage do
   alias PlantIdDiscordBot.PlantNet.Parser
   alias PlantIdDiscordBot.FileServer.File
 
-  # @guild Application.compile_env(:plantid_discord_bot, :guild)
+  # mock modules
+  @api Application.compile_env(:plantid_discord_bot, :api)
+  @guild Application.compile_env(:plantid_discord_bot, :guild)
+
+  # env vars
   @plantnet_api_base_url Application.compile_env(:plantid_discord_bot, :plantnet_api_base_url)
   @max_results Application.compile_env(:plantid_discord_bot, :max_results)
 
@@ -35,10 +39,10 @@ defmodule PlantIdDiscordBot.Cog.PlantNetMessage do
         e ->
           Logger.error(Exception.format(:error, e, __STACKTRACE__),
             guild_id: message.guild_id,
-            guild_name: Guild.get_guild_name!(message.guild_id)
+            guild_name: @guild.get_guild_name!(message.guild_id)
           )
 
-          Api.create_message(message.channel_id,
+          @api.create_message(message.channel_id,
             content: "An error has occured. Please try again later."
           )
 

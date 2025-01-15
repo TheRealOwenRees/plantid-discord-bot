@@ -3,6 +3,13 @@ defmodule PlantIdDiscordBotTest.Mocks.Nostrum.Api do
   Mocks the Nostrum.Api module.
   """
 
+  # def create_message(_channel_id, content), do: {:ok, content}
+
+  def create_message(_channel_id, content) do
+    send(self(), {:create_message, 123456, content})
+    {:ok, content}
+  end
+
   def create_interaction_response(_interaction, response), do: {:ok, response}
 
   def get_application_information() do
