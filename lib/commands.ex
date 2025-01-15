@@ -35,43 +35,6 @@ defmodule PlantIdDiscordBot.Consumer.Commands do
         name: "servers",
         description: "All servers that this bot belongs to",
         options: []
-      },
-      %{
-        name: "id",
-        description: "ID a plant from up to 5 images",
-        options: [
-          %{
-            # Attachment type
-            type: 11,
-            name: "image1",
-            description: "The image to identify",
-            required: true
-          },
-          %{
-            type: 11,
-            name: "image2",
-            description: "The image to identify",
-            required: false
-          },
-          %{
-            type: 11,
-            name: "image3",
-            description: "The image to identify",
-            required: false
-          },
-          %{
-            type: 11,
-            name: "image4",
-            description: "The image to identify",
-            required: false
-          },
-          %{
-            type: 11,
-            name: "image5",
-            description: "The image to identify",
-            required: false
-          }
-        ]
       }
     ]
   end
