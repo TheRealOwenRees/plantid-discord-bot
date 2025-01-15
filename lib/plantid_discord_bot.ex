@@ -4,10 +4,9 @@ defmodule PlantIdDiscordBot.Consumer do
   """
   use Nostrum.Consumer
   alias Nostrum.Api
-  alias PlantIdDiscordBot.Cog
-  alias PlantIdDiscordBot.Consumer.Commands
+  alias PlantIdDiscordBot.{Cog, Consumer}
 
-  @global_application_commands Commands.global_application_commands()
+  @global_application_commands Consumer.Commands.global_application_commands()
 
   def handle_event({:READY, _data, _ws_state}) do
     Api.create_global_application_command(@global_application_commands)

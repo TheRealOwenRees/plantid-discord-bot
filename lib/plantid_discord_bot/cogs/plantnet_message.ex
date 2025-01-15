@@ -9,6 +9,7 @@ defmodule PlantIdDiscordBot.Cog.PlantNetMessage do
   alias Nostrum.Cache.GuildCache
   alias PlantIdDiscordBot.Metrics
 
+  # TODO reintroduce mocks
   # @api Application.compile_env(:plantid_discord_bot, :api)
   @plantnet_api_base_url Application.compile_env(:plantid_discord_bot, :plantnet_api_base_url)
   @max_results Application.compile_env(:plantid_discord_bot, :max_results)
@@ -34,11 +35,14 @@ defmodule PlantIdDiscordBot.Cog.PlantNetMessage do
         |> Enum.map(fn attachment -> attachment.url end)
         |> File.download_and_save_files!()
       rescue
+        # TODO add guild id and name into error
+        # TODO test by raising error
         e in ArgumentError ->
           Api.create_message(message.channel_id, content: e.message)
           nil
       end
 
+    # TODO improve composition
     if saved_images do
       try do
         prepare_images(saved_images)
@@ -72,6 +76,8 @@ defmodule PlantIdDiscordBot.Cog.PlantNetMessage do
 
   defp get_response(query_uri, message) do
     guild_id = message.guild_id
+
+    # TODO move into its own function
     {:ok, %{name: guild_name}} = GuildCache.get(guild_id)
 
     case HTTPoison.get(query_uri) do
