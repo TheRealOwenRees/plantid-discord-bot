@@ -3,9 +3,7 @@ defmodule PlantIdDiscordBot.Cog.PlantNetMessage do
 
   use Nostrum.Consumer
   alias Nostrum.Api
-  alias PlantIdDiscordBot.{Guild, RateLimiter, Metrics}
-  alias PlantIdDiscordBot.FileServer.File
-  alias PlantIdDiscordBot.PlantNet.Parser
+  alias PlantIdDiscordBot.{Guild, RateLimiter, Metrics, FileServer.File, PlantNet.Parser}
 
   # TODO reintroduce mocks
   # @api Application.compile_env(:plantid_discord_bot, :api)
@@ -83,7 +81,7 @@ defmodule PlantIdDiscordBot.Cog.PlantNetMessage do
 
   defp get_response(query_uri, message) do
     guild_id = message.guild_id
-    guild_name = get_guild_name!(guild_id)
+    guild_name = Guild.get_guild_name!(guild_id)
 
     case HTTPoison.get(query_uri) do
       {:ok, %HTTPoison.Response{status_code: 200, body: body}} ->
