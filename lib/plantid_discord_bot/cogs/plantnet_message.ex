@@ -3,10 +3,11 @@ defmodule PlantIdDiscordBot.Cog.PlantNetMessage do
 
   use Nostrum.Consumer
   alias Nostrum.Api
-  alias PlantIdDiscordBot.{Guild, RateLimiter, Metrics, FileServer.File, PlantNet.Parser}
+  alias PlantIdDiscordBot.{Guild, RateLimiter, Metrics}
+  alias PlantIdDiscordBot.PlantNet.Parser
+  alias PlantIdDiscordBot.FileServer.File
 
-  # TODO reintroduce mocks
-  # @api Application.compile_env(:plantid_discord_bot, :api)
+  # @guild Application.compile_env(:plantid_discord_bot, :guild)
   @plantnet_api_base_url Application.compile_env(:plantid_discord_bot, :plantnet_api_base_url)
   @max_results Application.compile_env(:plantid_discord_bot, :max_results)
 

@@ -22,7 +22,6 @@ defmodule PlantIdDiscordBot.Consumer do
       "stats" -> Cog.Info.stats(interaction)
       "status" -> Cog.Info.status(interaction)
       "servers" -> Cog.Info.servers(interaction)
-      "id" -> Cog.PlantNet.id(interaction)
     end
   end
 
