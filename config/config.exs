@@ -7,8 +7,7 @@ config :plantid_discord_bot,
   image_path: "priv/static",
   plantnet_api_base_url: "https://my-api.plantnet.org/v2",
   source: "https://github.com/TheRealOwenRees/plantid-discord-bot",
-  invite:
-    "https://discord.com/api/oauth2/authorize?client_id=948227126094598204&permissions=19520&scope=bot"
+  invite: "https://discord.com/oauth2/authorize?client_id=948227126094598204"
 
 config :nostrum,
   ffmpeg: nil,

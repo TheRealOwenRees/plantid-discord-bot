@@ -4,7 +4,7 @@
 
 Plant ID Bot identifies plants from photos of their organs, passing to the [Plantnet API] for identification. This bot was written for [Sustainable Living Hub](https://discord.com/invite/gQU5yWg)
 
-If you wish to invite this bot to your server, use [this link.](https://discord.com/api/oauth2/authorize?client_id=948227126094598204&permissions=19520&scope=bot) However, your server will be limited to a maximum of 10 identifications every 24h. It is strongly preferred that you host a version of this bot yourself and register for your own PlantNet API key. Details for this are later in this readme file.
+If you wish to invite this bot to your server, use [this link.](https://discord.com/oauth2/authorize?client_id=948227126094598204) However, your server will be limited to a maximum of 10 identifications every 24h. It is strongly preferred that you host a version of this bot yourself and register for your own PlantNet API key. Details for this are later in this readme file.
 
 ### Features
 
