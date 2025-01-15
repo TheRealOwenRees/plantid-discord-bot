@@ -3,11 +3,9 @@ defmodule PlantIdDiscordBot.Cog.PlantNetMessage do
 
   use Nostrum.Consumer
   alias Nostrum.Api
-  alias PlantIdDiscordBot.RateLimiter
+  alias PlantIdDiscordBot.{Guild, RateLimiter, Metrics}
   alias PlantIdDiscordBot.FileServer.File
   alias PlantIdDiscordBot.PlantNet.Parser
-  alias Nostrum.Cache.GuildCache
-  alias PlantIdDiscordBot.Metrics
 
   # TODO reintroduce mocks
   # @api Application.compile_env(:plantid_discord_bot, :api)
@@ -35,10 +33,16 @@ defmodule PlantIdDiscordBot.Cog.PlantNetMessage do
         |> Enum.map(fn attachment -> attachment.url end)
         |> File.download_and_save_files!()
       rescue
-        # TODO add guild id and name into error
-        # TODO test by raising error
-        e in ArgumentError ->
-          Api.create_message(message.channel_id, content: e.message)
+        e ->
+          Logger.error(Exception.format(:error, e, __STACKTRACE__),
+            guild_id: message.guild_id,
+            guild_name: Guild.get_guild_name!(message.guild_id)
+          )
+
+          Api.create_message(message.channel_id,
+            content: "An error has occured. Please try again later."
+          )
+
           nil
       end
 
@@ -50,7 +54,10 @@ defmodule PlantIdDiscordBot.Cog.PlantNetMessage do
         |> get_response(message)
       rescue
         e ->
-          Logger.error(Exception.format(:error, e, __STACKTRACE__))
+          Logger.error(Exception.format(:error, e, __STACKTRACE__),
+            guild_id: message.guild_id,
+            guild_name: Guild.get_guild_name!(message.guild_id)
+          )
 
           Api.create_message(
             message.channel_id,
@@ -76,9 +83,7 @@ defmodule PlantIdDiscordBot.Cog.PlantNetMessage do
 
   defp get_response(query_uri, message) do
     guild_id = message.guild_id
-
-    # TODO move into its own function
-    {:ok, %{name: guild_name}} = GuildCache.get(guild_id)
+    guild_name = get_guild_name!(guild_id)
 
     case HTTPoison.get(query_uri) do
       {:ok, %HTTPoison.Response{status_code: 200, body: body}} ->
@@ -95,7 +100,10 @@ defmodule PlantIdDiscordBot.Cog.PlantNetMessage do
         )
 
       {:ok, %HTTPoison.Response{status_code: 401, body: body}} ->
-        Logger.critical("Unauthorized request to PlantNet API: #{body}")
+        Logger.critical("Unauthorized request to PlantNet API: #{body}",
+          guild_id: guild_id,
+          guild_name: guild_name
+        )
 
         Api.create_message(message.channel_id,
           content: "Unauthorized request to PlantNet API.",
@@ -120,7 +128,10 @@ defmodule PlantIdDiscordBot.Cog.PlantNetMessage do
         )
 
       {_, _} ->
-        Logger.error("Internal server error when contacting the PlantNet API")
+        Logger.error("Internal server error when contacting the PlantNet API",
+          guild_id: guild_id,
+          guild_name: guild_name
+        )
 
         Api.create_message(message.channel_id,
           content: "Internal Server Error",
