@@ -29,7 +29,7 @@ defmodule PlantidDiscordBot.MixProject do
       {:httpoison, "~> 2.2"},
       {:image, "~> 0.55"},
       {:jason, "~> 1.4"},
-      {:logger_webhook_backend, "~> 0.0.3"},
+      {:logger_webhook_backend, "~> 0.0.4"},
       {:plug, "~> 1.12"},
       {:plug_cowboy, "~> 2.7"},
       {:quantum, "~> 3.5"}
