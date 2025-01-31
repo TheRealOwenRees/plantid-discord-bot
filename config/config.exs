@@ -11,7 +11,7 @@ config :plantid_discord_bot,
 
 config :nostrum,
   ffmpeg: nil,
-  gateway_intents: [:guilds, :guild_messages, :message_content]
+  gateway_intents: [:guilds, :guild_messages, :message_content],
   token: System.get_env("PLANTID_DISCORD_BOT_TOKEN")
 
 config :plantid_discord_bot, PlantIdDiscordBot.Scheduler,
