@@ -65,22 +65,31 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           port: ${{ secrets.PORT }}
           script: |
+            # setup environment variables
             export PLANTID_LOGS_DISCORD_WEBHOOK_URL=${{ secrets.PLANTID_LOGS_DISCORD_WEBHOOK_URL }}
             export PLANTNET_API_KEY=${{ secrets.PLANTNET_API_KEY }}
             export PLANTID_DISCORD_BOT_TOKEN=${{ secrets.PLANTID_DISCORD_BOT_TOKEN }}
             export PLANTID_FILESERVER_URL=${{ secrets.PLANTID_FILESERVER_URL }}
             cd /home/${{ secrets.USERNAME }}/plantid_discord_bot
+
             # extract artifacts
             tar -xzf release.tar.gz
-            # save metrics and stop the bot
+
+            # save metrics and stop the bot - bot runs as a service
             current_release/bin/plantid_discord_bot rpc "PlantidDiscordBot.Metrics.backup()"
-            current_release/bin/plantid_discord_bot stop || true
+            echo "${{ secrets.SUDO_PASSWORD }}" | sudo -S sudo systemctl stop plantid_discord_bot
+
             # switch releases
             rm -rf old_release
             mv current_release old_release || true
             mv plantid_discord_bot current_release
+
             # copy metrics from previous release to current release
             mkdir -p current_release/priv/metrics
             cp -r old_release/priv/metrics/* current_release/priv/metrics/ 2>/dev/null || true
-            current_release/bin/plantid_discord_bot daemon
+
+            # start the bot
+            echo "${{ secrets.SUDO_PASSWORD }}" | sudo -S sudo systemctl start plantid_discord_bot
+
+            # cleanup
             rm -f release.tar.gz
