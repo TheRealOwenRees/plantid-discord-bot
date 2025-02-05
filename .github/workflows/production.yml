@@ -77,7 +77,7 @@ jobs:
 
             # save metrics and stop the bot - bot runs as a service
             current_release/bin/plantid_discord_bot rpc "PlantidDiscordBot.Metrics.backup()"
-            echo "${{ secrets.SUDO_PASSWORD }}" | sudo -S sudo systemctl stop plantid_discord_bot
+            echo "${{ secrets.SUDO_PASSWORD }}" | sudo -S sudo service plantid_discord_bot stop
 
             # switch releases
             rm -rf old_release
@@ -89,7 +89,7 @@ jobs:
             cp -r old_release/priv/metrics/* current_release/priv/metrics/ 2>/dev/null || true
 
             # start the bot
-            echo "${{ secrets.SUDO_PASSWORD }}" | sudo -S sudo systemctl start plantid_discord_bot
+            echo "${{ secrets.SUDO_PASSWORD }}" | sudo -S sudo service plantid_discord_bot start
 
             # cleanup
             rm -f release.tar.gz
