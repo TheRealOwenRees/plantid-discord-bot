@@ -33,7 +33,7 @@ defmodule PlantIdDiscordBot.PlantNet.Parser do
   @doc """
   Parses the response from the PlantNet API into a map.
   """
-  @spec parse(String.t()) :: map()
+  @spec parse(String.t()) :: String.t()
   def parse(response) do
     response
     |> to_map!()
@@ -140,7 +140,7 @@ defmodule PlantIdDiscordBot.PlantNet.Parser do
 
   @spec get_alternatives(map()) :: String.t()
   defp get_alternatives(data) do
-    if length(data) > 0 do
+    if Map.keys(data) != [] do
       alternatives =
         Enum.map(data, & &1["species"]["scientificNameWithoutAuthor"])
         |> Enum.join(", ")
