@@ -20,14 +20,14 @@ defmodule PlantIdDiscordBotTest.Utils.Duration do
     test "hours" do
       assert Duration.sec_to_str(3600) == "1h"
       assert Duration.sec_to_str(7205) == "2h 5s"
-      assert Duration.sec_to_str(36300) == "10h 5m"
-      assert Duration.sec_to_str(36315) == "10h 5m 15s"
-      refute Duration.sec_to_str(86400) == "24h"
+      assert Duration.sec_to_str(36_300) == "10h 5m"
+      assert Duration.sec_to_str(36_315) == "10h 5m 15s"
+      refute Duration.sec_to_str(86_400) == "24h"
     end
 
     test "days" do
-      assert Duration.sec_to_str(86400) == "1d"
-      assert Duration.sec_to_str(86715) == "1d 5m 15s"
+      assert Duration.sec_to_str(86_400) == "1d"
+      assert Duration.sec_to_str(86_715) == "1d 5m 15s"
       refute Duration.sec_to_str(604_800) == "7d"
     end
 
