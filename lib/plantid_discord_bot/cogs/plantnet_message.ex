@@ -1,4 +1,7 @@
 defmodule PlantIdDiscordBot.Cog.PlantNetMessage do
+  @moduledoc """
+  Functions for sending and receiving data from PLantNet
+  """
   require Logger
 
   use Nostrum.Consumer
@@ -49,7 +52,6 @@ defmodule PlantIdDiscordBot.Cog.PlantNetMessage do
           nil
       end
 
-    # TODO improve composition
     if saved_images do
       try do
         prepare_images(saved_images)

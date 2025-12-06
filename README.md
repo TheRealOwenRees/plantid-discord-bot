@@ -15,19 +15,20 @@ If you wish to invite this bot to your server, use [this link.](https://discord.
 
 ### Dependencies
 
-This application has been built and tested with Elixir 1.16 / OTP 26.
+This application has been built and tested with Elixir 1.18 / OTP 28.
 
 ```elixir
 # mix.exs
 
 defp deps do
     [
+      {:credo, "~> 1.7", only: [:dev, :test], runtime: false},
       {:dialyxir, "~> 1.4", only: [:dev, :test], runtime: false},
       {:nostrum, "~> 0.10"},
       {:httpoison, "~> 2.2"},
       {:image, "~> 0.55"},
       {:jason, "~> 1.4"},
-      {:logger_webhook_backend, "~> 0.0.2"},
+      {:logger_webhook_backend, "~> 0.0.4"},
       {:plug, "~> 1.12"},
       {:plug_cowboy, "~> 2.7"},
       {:quantum, "~> 3.5"}
@@ -40,9 +41,12 @@ defp deps do
 Below are the environment variables that you need to set for the program to function:
 
 ```
+# needed in development and production
 PLANTID_DISCORD_BOT_TOKEN=           client secret from the bot's application
 PLANTID_LOGS_DISCORD_WEBHOOK_URL=    webhook url for the log channel
 PLANTNET_API_KEY=                    API key for the PlantNet service
+
+# needed in production
 PLANTID_FILESERVER_URL               URL and port(if needed) for the http file server
 ```
 

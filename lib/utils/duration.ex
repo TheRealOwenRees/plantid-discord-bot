@@ -1,11 +1,21 @@
-# https://rosettacode.org/wiki/Convert_seconds_to_compound_duration
 defmodule PlantIdDiscordBot.Utils.Duration do
+  @moduledoc """
+  Duration conversion functions.
+  """
   @minute 60
   @hour @minute * 60
   @day @hour * 24
   @week @day * 7
   @divisor [@week, @day, @hour, @minute, 1]
 
+  @doc """
+  Convert seconds to a time string.
+  # https://rosettacode.org/wiki/Convert_seconds_to_compound_duration
+
+  ## Examples
+      iex> PlantIdDiscordBot.Utils.Duration.sec_to_str(65)
+      iex> "1m 5s"
+  """
   def sec_to_str(sec) do
     {_, [s, m, h, d, w]} =
       Enum.reduce(@divisor, {sec, []}, fn divisor, {n, acc} ->

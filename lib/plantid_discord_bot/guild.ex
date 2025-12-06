@@ -1,4 +1,7 @@
 defmodule PlantIdDiscordBot.Guild do
+  @moduledoc """
+  Guild related functions.
+  """
   alias Nostrum.Cache.GuildCache
 
   def get_guild_name!(guild_id) do

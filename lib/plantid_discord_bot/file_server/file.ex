@@ -2,6 +2,8 @@ defmodule PlantIdDiscordBot.FileServer.File do
   @moduledoc """
   File utilities
   """
+  require Logger
+
   alias PlantIdDiscordBot.FileServer.ImageConverter
 
   @image_path Application.compile_env(:plantid_discord_bot, :image_path)
@@ -56,7 +58,6 @@ defmodule PlantIdDiscordBot.FileServer.File do
     |> File.read()
   end
 
-  # TODO make into a task for async deletion and deal with errors
   @spec delete_files!([String.t()]) :: :ok
   def delete_files!(filenames) do
     tasks =
@@ -65,8 +66,7 @@ defmodule PlantIdDiscordBot.FileServer.File do
           try do
             File.rm!(Path.join(@image_path, filename))
           rescue
-            # TODO Logger
-            e -> IO.inspect(e)
+            e -> Logger.error(e)
           end
         end)
       end)

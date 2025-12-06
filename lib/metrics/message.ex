@@ -1,4 +1,7 @@
 defmodule PlantIdDiscordBot.Metrics.Message do
+  @moduledoc """
+  Metrics messaging.
+  """
   def send() do
     PlantIdDiscordBot.Metrics.requests()
     |> format_message()

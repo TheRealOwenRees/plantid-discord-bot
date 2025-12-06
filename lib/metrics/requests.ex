@@ -1,4 +1,7 @@
 defmodule PlantIdDiscordBot.Metrics.Requests do
+  @moduledoc """
+  Basic metrics with usage count per guild.
+  """
   use Agent
   alias PlantIdDiscordBot.Metrics.Requests
   alias PlantIdDiscordBot.ProcessRegistry
