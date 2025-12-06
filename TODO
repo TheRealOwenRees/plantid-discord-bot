@@ -1,0 +1,24 @@
+# 📝 Project TODOs
+
+## 🚀 High Priority
+
+- [ ] Update deps and run on Elixir 1.18 / otp 28
+- [ ] Run static analysis tools and fix code
+- [ ] Improve error return message
+
+## 📦 Medium Priority
+
+- [ ] - add credo, dialyxir and test to GH actions
+- [ ] - use Req instead of HTTPoison
+
+## 🛠️ Low Priority
+
+- [ ]
+
+## 📚 Documentation
+
+- [ ]
+
+---
+
+✅ Keep this file updated as tasks are completed. Use `git diff` to track progress.
