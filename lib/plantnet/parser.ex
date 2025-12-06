@@ -33,7 +33,7 @@ defmodule PlantIdDiscordBot.PlantNet.Parser do
   @doc """
   Parses the response from the PlantNet API into a map.
   """
-  @spec parse(String.t()) :: map()
+  @spec parse(String.t()) :: String.t()
   def parse(response) do
     response
     |> to_map!()
@@ -85,7 +85,7 @@ defmodule PlantIdDiscordBot.PlantNet.Parser do
     "My best guess is **#{best_guess_name}** with a confidence of **#{score}%**.#{get_common_names(best_result)}\n\nSpecies info from plant databases:\n[GBIF](<#{best_result["gbif_url"]}>) | [PFAF](<#{best_result["pfaf_url"]}>) | [POWO](<#{best_result["powo_url"]}>)#{if best_result_iucn_category, do: "\n\nConservation status: #{iucn_parser(best_result_iucn_category)}"}#{get_alternatives(other_results)}"
   end
 
-  @spec generate_gbif_url(map()) :: map()
+  @spec generate_gbif_url([map()]) :: [map()]
   defp generate_gbif_url(data) do
     Enum.map(data, fn result ->
       gbif_id = result["gbif"]["id"]
@@ -93,7 +93,7 @@ defmodule PlantIdDiscordBot.PlantNet.Parser do
     end)
   end
 
-  @spec generate_pfaf_url(map()) :: map()
+  @spec generate_pfaf_url([map()]) :: [map()]
   defp generate_pfaf_url(data) do
     Enum.map(data, fn result ->
       pfaf_slug = String.replace(result["species"]["scientificNameWithoutAuthor"], " ", "+")
@@ -104,7 +104,7 @@ defmodule PlantIdDiscordBot.PlantNet.Parser do
     end)
   end
 
-  @spec generate_powo_url(map()) :: map()
+  @spec generate_powo_url([map()]) :: [map()]
   defp generate_powo_url(data) do
     Enum.map(data, fn result ->
       powo_id = result["powo"]["id"]
