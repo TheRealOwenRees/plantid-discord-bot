@@ -4,8 +4,8 @@ defmodule PlantidDiscordBot.MixProject do
   def project do
     [
       app: :plantid_discord_bot,
-      version: "0.2.0",
-      elixir: "~> 1.16",
+      version: "0.2.1",
+      elixir: "~> 1.8",
       start_permanent: Mix.env() == :prod,
       deps: deps()
     ]
@@ -24,6 +24,7 @@ defmodule PlantidDiscordBot.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
+      {:credo, "~> 1.7", only: [:dev, :test], runtime: false},
       {:dialyxir, "~> 1.4", only: [:dev, :test], runtime: false},
       {:nostrum, "~> 0.10"},
       {:httpoison, "~> 2.2"},
