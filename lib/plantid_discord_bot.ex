@@ -26,10 +26,15 @@ defmodule PlantIdDiscordBot.Consumer do
   end
 
   def handle_event({:MESSAGE_CREATE, %{attachments: attachments} = message, _ws_state}) do
-    if length(attachments) > 0 do
-      # deprecated -> Nostrum.Api.Channel.start_typing/1 in v1.0
+    if !Enum.empty?(attachments) do
       Api.start_typing!(message.channel_id)
       Cog.PlantNetMessage.id(message)
     end
+
+    # if length(attachments) > 0 do
+    #   # deprecated -> Nostrum.Api.Channel.start_typing/1 in v1.0
+    #   Api.start_typing!(message.channel_id)
+    #   Cog.PlantNetMessage.id(message)
+    # end
   end
 end
