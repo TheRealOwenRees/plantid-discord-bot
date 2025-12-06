@@ -123,20 +123,16 @@ defmodule PlantIdDiscordBot.PlantNet.Parser do
   end
 
   @spec iucn_parser(String.t()) :: String.t()
-  defp iucn_parser(abbreviation) do
-    case abbreviation do
-      "DD" -> "Data Deficient"
-      "LC" -> "Least Concern"
-      "NT" -> "Near Threatened"
-      "VU" -> "Vulnerable"
-      "EN" -> "Endangered"
-      "CR" -> "Critically Endangered"
-      "EW" -> "Extinct in the Wild"
-      "EX" -> "Extinct"
-      "NE" -> "Not Evaluated"
-      _ -> "Unknown"
-    end
-  end
+  def iucn_parser("DD"), do: "Data Deficient"
+  def iucn_parser("LC"), do: "Least Concern"
+  def iucn_parser("NT"), do: "Near Threatened"
+  def iucn_parser("VU"), do: "Vulnerable"
+  def iucn_parser("EN"), do: "Endangered"
+  def iucn_parser("CR"), do: "Criticaly Endangered"
+  def iucn_parser("EW"), do: "Extinct in the Wild"
+  def iucn_parser("EX"), do: "Extinct"
+  def iucn_parser("NE"), do: "Not Evaluated"
+  def iucn_parser(_), do: "Unknown"
 
   @spec get_alternatives(map()) :: String.t()
   defp get_alternatives(data) do

@@ -63,4 +63,19 @@ defmodule PlantIdDiscordBotTest.PlantNet.Parser do
                "My best guess is **Prunus cerasifera** with a confidence of **88%**.\n\nSpecies info from plant databases:\n[GBIF](<https://www.gbif.org/species/3021730>) | [PFAF](<https://pfaf.org/user/Plant.aspx?LatinName=/Prunus+cerasifera>) | [POWO](<https://powo.science.kew.org/taxon/729568-1>)\n\nConservation status: Data Deficient\n\nAlternatives include **Prunus × cistena**."
     end
   end
+
+  describe "iucn_parser/1" do
+    test "return correct string for abbreviation" do
+      assert Parser.iucn_parser("DD") == "Data Deficient"
+      assert Parser.iucn_parser("LC") == "Least Concern"
+      assert Parser.iucn_parser("NT") == "Near Threatened"
+      assert Parser.iucn_parser("VU") == "Vulnerable"
+      assert Parser.iucn_parser("EN") == "Endangered"
+      assert Parser.iucn_parser("CR") == "Critically Endangered"
+      assert Parser.iucn_parser("EW") == "Extinct in the Wild"
+      assert Parser.iucn_parser("EX") == "Extinct"
+      assert Parser.iucn_parser("NE") == "Not Evaluated"
+      assert Parser.iucn_parser("ABC") == "Unknown"
+    end
+  end
 end
