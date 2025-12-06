@@ -140,19 +140,20 @@ defmodule PlantIdDiscordBot.PlantNet.Parser do
 
   @spec get_alternatives(map()) :: String.t()
   defp get_alternatives(data) do
-    # keys = Map.keys(data)
-    # if keys != [] do
-    #       alternatives =
-    #     Enum.map(data, & &1["species"]["scientificNameWithoutAuthor"])
-    #     |> Enum.join(", ")
-    # end
-
-    if length(data) > 0 do
+    if !Enum.empty?(data) do
       alternatives =
         Enum.map(data, & &1["species"]["scientificNameWithoutAuthor"])
         |> Enum.join(", ")
 
       "\n\nAlternatives include **#{alternatives}**."
     end
+
+    # if length(data) > 0 do
+    #   alternatives =
+    #     Enum.map(data, & &1["species"]["scientificNameWithoutAuthor"])
+    #     |> Enum.join(", ")
+
+    #   "\n\nAlternatives include **#{alternatives}**."
+    # end
   end
 end
