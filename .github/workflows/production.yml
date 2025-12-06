@@ -76,7 +76,7 @@ jobs:
             tar -xzf release.tar.gz
 
             # save metrics and stop the bot - bot runs as a service
-            current_release/bin/plantid_discord_bot rpc "PlantidDiscordBot.Metrics.backup()"
+            current_release/bin/plantid_discord_bot rpc "PlantIdDiscordBot.Metrics.backup()"
             echo "${{ secrets.SUDO_PASSWORD }}" | sudo -S sudo service plantid_discord_bot stop
 
             # switch releases
