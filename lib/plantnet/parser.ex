@@ -128,7 +128,7 @@ defmodule PlantIdDiscordBot.PlantNet.Parser do
   def iucn_parser("NT"), do: "Near Threatened"
   def iucn_parser("VU"), do: "Vulnerable"
   def iucn_parser("EN"), do: "Endangered"
-  def iucn_parser("CR"), do: "Criticaly Endangered"
+  def iucn_parser("CR"), do: "Critically Endangered"
   def iucn_parser("EW"), do: "Extinct in the Wild"
   def iucn_parser("EX"), do: "Extinct"
   def iucn_parser("NE"), do: "Not Evaluated"
@@ -138,11 +138,18 @@ defmodule PlantIdDiscordBot.PlantNet.Parser do
   defp get_alternatives(data) do
     if !Enum.empty?(data) do
       alternatives =
-        Enum.map(data, & &1["species"]["scientificNameWithoutAuthor"])
-        |> Enum.join(", ")
+        Enum.map_join(data, ", ", & &1["species"]["scientificNameWithoutAuthor"])
 
       "\n\nAlternatives include **#{alternatives}**."
     end
+
+    # if !Enum.empty?(data) do
+    #   alternatives =
+    #     Enum.map(data, & &1["species"]["scientificNameWithoutAuthor"])
+    #     |> Enum.join(", ")
+
+    #   "\n\nAlternatives include **#{alternatives}**."
+    # end
 
     # if length(data) > 0 do
     #   alternatives =
