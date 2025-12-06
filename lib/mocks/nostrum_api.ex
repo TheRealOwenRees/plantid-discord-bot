@@ -6,7 +6,7 @@ defmodule PlantIdDiscordBotTest.Mocks.Nostrum.Api do
   # def create_message(_channel_id, content), do: {:ok, content}
 
   def create_message(_channel_id, content) do
-    send(self(), {:create_message, 123456, content})
+    send(self(), {:create_message, 123_456, content})
     {:ok, content}
   end
 
