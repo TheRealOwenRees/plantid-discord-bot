@@ -1,4 +1,7 @@
 defmodule PlantIdDiscordBot.Utils do
+  @moduledoc """
+  Bot related utility functions.
+  """
   def get_uptime() do
     start_time = Application.get_env(:plantid_discord_bot, :start_time)
 

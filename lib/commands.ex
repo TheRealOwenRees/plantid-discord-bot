@@ -1,4 +1,7 @@
 defmodule PlantIdDiscordBot.Consumer.Commands do
+  @moduledoc """
+  Application commands.
+  """
   def global_application_commands do
     [
       %{

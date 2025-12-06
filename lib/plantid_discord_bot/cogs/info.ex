@@ -1,4 +1,9 @@
 defmodule PlantIdDiscordBot.Cog.Info do
+  @moduledoc """
+  Functions for using the /info application command.
+
+  Returns a message embed of application commands available to the user.
+  """
   use Nostrum.Consumer
   import Nostrum.Struct.Embed
   alias PlantIdDiscordBot.Utils

@@ -1,4 +1,10 @@
 defmodule PlantIdDiscordBot.RateLimiter do
+  @moduledoc """
+  Basic rate limiter to prevent one guild from calling too many requests in 24 hours.
+
+  Custom limits have been set for some guilds that are trusted.
+  """
+
   use GenServer
   require Logger
 
