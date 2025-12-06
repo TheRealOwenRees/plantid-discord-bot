@@ -132,13 +132,11 @@ defmodule PlantIdDiscordBot.Cog.PlantNetMessage do
           message_reference: %{message_id: message.id}
         )
 
-      {_, %HTTPoison.Response{body: body}} ->
+      {_, _} ->
         Logger.error("Internal server error when contacting the PlantNet API",
           guild_id: guild_id,
           guild_name: guild_name
         )
-
-        IO.inspect(body)
 
         Api.create_message(message.channel_id,
           content: "Internal Server Error",

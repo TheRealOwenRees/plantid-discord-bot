@@ -9,7 +9,12 @@ defmodule PlantIdDiscordBot.Utils.Duration do
   @divisor [@week, @day, @hour, @minute, 1]
 
   @doc """
+  Convert seconds to a time string.
   # https://rosettacode.org/wiki/Convert_seconds_to_compound_duration
+
+  ## Examples
+      iex> PlantIdDiscordBot.Utils.Duration.sec_to_str(65)
+      iex> "1m 5s"
   """
   def sec_to_str(sec) do
     {_, [s, m, h, d, w]} =
