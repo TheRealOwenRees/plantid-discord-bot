@@ -5,12 +5,14 @@ defmodule PlantIdDiscordBot.Consumer do
   use Nostrum.Consumer
   alias Nostrum.Api
   alias PlantIdDiscordBot.{Cog, Consumer}
+  alias PlantIdDiscordBot.PlantNet.Projects
 
   @global_application_commands Consumer.Commands.global_application_commands()
 
   def handle_event({:READY, _data, _ws_state}) do
     Api.create_global_application_command(@global_application_commands)
     Api.update_status(:online, "Guess the Plant | /help")
+    Projects.fetch_projects()
   end
 
   def handle_event({:INTERACTION_CREATE, %{data: %{name: command}} = interaction, _ws_state}) do
