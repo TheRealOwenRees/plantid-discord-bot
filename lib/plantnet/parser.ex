@@ -142,21 +142,5 @@ defmodule PlantIdDiscordBot.PlantNet.Parser do
 
       "\n\nAlternatives include **#{alternatives}**."
     end
-
-    # if !Enum.empty?(data) do
-    #   alternatives =
-    #     Enum.map(data, & &1["species"]["scientificNameWithoutAuthor"])
-    #     |> Enum.join(", ")
-
-    #   "\n\nAlternatives include **#{alternatives}**."
-    # end
-
-    # if length(data) > 0 do
-    #   alternatives =
-    #     Enum.map(data, & &1["species"]["scientificNameWithoutAuthor"])
-    #     |> Enum.join(", ")
-
-    #   "\n\nAlternatives include **#{alternatives}**."
-    # end
   end
 end
