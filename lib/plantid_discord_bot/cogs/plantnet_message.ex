@@ -131,8 +131,17 @@ defmodule PlantIdDiscordBot.Cog.PlantNetMessage do
   end
 
   @spec build_query_uri([String.t()], String.t()) :: String.t()
-  defp build_query_uri(image_filenames, "all") do
-    URI.parse("#{@plantnet_api_base_url}/identify/all")
+  def build_query_uri(image_filenames, identification_type) do
+    create_base_uri(identification_type)
+    |> add_required_query_params(image_filenames)
+  end
+
+  defp create_base_uri("all"), do: "#{@plantnet_api_base_url}/identify/all"
+  defp create_base_uri("diseases"), do: "#{@plantnet_api_base_url}/diseases/identify"
+  defp create_base_uri(_), do: "#{@plantnet_api_base_url}/identify/all"
+
+  defp add_required_query_params(base_uri, image_filenames) do
+    URI.parse(base_uri)
     |> URI.append_query("api-key=#{Application.get_env(:plantid_discord_bot, :plantnet_api_key)}")
     |> URI.append_query("images=#{Enum.join(image_filenames, "&images=")}")
     |> URI.append_query("nb-results=#{@max_results}")

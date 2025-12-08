@@ -19,7 +19,8 @@ defmodule PlantIdDiscordBot.Consumer do
     end)
 
     if Mix.env() == :prod do
-      Api.create_global_application_command(@global_application_commands)
+      # Api.create_global_application_command(@global_application_commands)
+      Api.bulk_overwrite_global_application_commands(@global_application_commands)
     end
 
     Api.update_status(:online, "Guess the Plant | /help")
