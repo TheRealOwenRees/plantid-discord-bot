@@ -4,12 +4,12 @@ defmodule PlantIdDiscordBot.ErrorHandlingTest do
 
   @guild Application.compile_env(:plantid_discord_bot, :guild)
 
-  test "do_identification/1 returns invokes logger on error" do
+  test "do_identification/2 returns invokes logger on error" do
     message = PlantNetFixtures.Message.message()
 
     log =
       capture_log(fn ->
-        PlantIdDiscordBot.Cog.PlantNetMessage.do_identification(message)
+        PlantIdDiscordBot.Cog.PlantNetMessage.do_identification(message, "all")
 
         assert_received {:create_message, 123_456,
                          content: "An error has occured. Please try again later."}

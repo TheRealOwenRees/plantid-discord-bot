@@ -18,7 +18,7 @@ defmodule PlantIdDiscordBot.Cog.PlantNetMessage do
   @plantnet_api_base_url Application.compile_env(:plantid_discord_bot, :plantnet_api_base_url)
   @max_results Application.compile_env(:plantid_discord_bot, :max_results)
 
-  def id(message) do
+  def id(message, identification_type \\ "all") do
     case RateLimiter.check_limit(message.guild_id) do
       {:limit_exceeded, _requests_used, _requests_limit} ->
         Api.create_message(message.channel_id,
@@ -28,11 +28,11 @@ defmodule PlantIdDiscordBot.Cog.PlantNetMessage do
         )
 
       {:ok, _requests_used, _requests_limit} ->
-        do_identification(message)
+        do_identification(message, identification_type)
     end
   end
 
-  def do_identification(message) do
+  def do_identification(message, identification_type) do
     saved_images =
       try do
         Enum.take(message.attachments, 5)
@@ -55,7 +55,7 @@ defmodule PlantIdDiscordBot.Cog.PlantNetMessage do
     if saved_images do
       try do
         prepare_images(saved_images)
-        |> build_query_uri()
+        |> build_query_uri(identification_type)
         |> get_response(message)
       rescue
         e ->
@@ -145,11 +145,10 @@ defmodule PlantIdDiscordBot.Cog.PlantNetMessage do
     end
   end
 
-  @spec build_query_uri([String.t()]) :: String.t()
-  defp build_query_uri(image_filenames) do
-    URI.parse(
-      "#{@plantnet_api_base_url}/identify/all?api-key=#{Application.get_env(:plantid_discord_bot, :plantnet_api_key)}"
-    )
+  @spec build_query_uri([String.t()], String.t()) :: String.t()
+  defp build_query_uri(image_filenames, "all") do
+    URI.parse("#{@plantnet_api_base_url}/identify/all")
+    |> URI.append_query("api-key=#{Application.get_env(:plantid_discord_bot, :plantnet_api_key)}")
     |> URI.append_query("images=#{Enum.join(image_filenames, "&images=")}")
     |> URI.append_query("nb-results=#{@max_results}")
     |> URI.append_query("type=kt")
