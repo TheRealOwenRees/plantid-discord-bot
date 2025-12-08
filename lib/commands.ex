@@ -42,7 +42,43 @@ defmodule PlantIdDiscordBot.Consumer.Commands do
       %{
         name: "diseases",
         description: "Identify diseases from photos",
-        options: []
+        options: [
+          %{
+            # ATTACHMENT (Image 1 - Required)
+            type: 11,
+            name: "image1",
+            description: "First photo of the plant",
+            required: true
+          },
+          %{
+            # ATTACHMENT (Image 2 - Optional)
+            type: 11,
+            name: "image2",
+            description: "Second photo (optional)",
+            required: false
+          },
+          %{
+            # ATTACHMENT (Image 3 - Optional)
+            type: 11,
+            name: "image3",
+            description: "Third photo (optional)",
+            required: false
+          },
+          %{
+            # ATTACHMENT (Image 4 - Optional)
+            type: 11,
+            name: "image4",
+            description: "Fourth photo (optional)",
+            required: false
+          },
+          %{
+            # ATTACHMENT (Image 5 - Optional)
+            type: 11,
+            name: "image5",
+            description: "Fifth photo (optional)",
+            required: false
+          }
+        ]
       },
       %{
         name: "projects",

@@ -7,7 +7,7 @@ defmodule PlantIdDiscordBot.Cog.Diseases do
   @api Application.compile_env(:plantid_discord_bot, :api)
 
   @doc """
-  Sends an invite link for this bot.
+  # TODO do we know what the return map shape is? Is it the same as before? Do we have to write a new parser?
   """
   def diseases(interaction) do
     message = "Diseases coming soon."

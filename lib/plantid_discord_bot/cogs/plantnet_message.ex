@@ -107,7 +107,7 @@ defmodule PlantIdDiscordBot.Cog.PlantNetMessage do
           guild_name: guild_name
         )
 
-        send_message("Unauthorizes requesnt to PlantNet API", message.channel_id, message.id)
+        send_message("Unauthorized requesnt to PlantNet API", message.channel_id, message.id)
 
       {:ok, %HTTPoison.Response{status_code: 404}} ->
         RateLimiter.increase_counter(guild_id)
