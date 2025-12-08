@@ -40,6 +40,11 @@ defmodule PlantIdDiscordBot.Consumer.Commands do
         options: []
       },
       %{
+        name: "diseases",
+        description: "Identify diseases from photos",
+        options: []
+      },
+      %{
         name: "projects",
         description: "Plants grouped by region  or type, for identification",
         options: [

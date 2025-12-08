@@ -5,7 +5,6 @@ defmodule PlantIdDiscordBot.Consumer do
   use Nostrum.Consumer
   alias Nostrum.Api
   alias PlantIdDiscordBot.{Cog, Consumer}
-  alias PlantIdDiscordBot.PlantNet.Projects
 
   @global_application_commands Consumer.Commands.global_application_commands()
 
@@ -39,6 +38,7 @@ defmodule PlantIdDiscordBot.Consumer do
       "stats" -> Cog.Info.stats(interaction)
       "status" -> Cog.Info.status(interaction)
       "servers" -> Cog.Info.servers(interaction)
+      "diseases" -> Cog.Diseases.diseases(interaction)
       "projects" -> Cog.Projects.projects(interaction)
     end
   end
