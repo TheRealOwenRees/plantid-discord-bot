@@ -21,10 +21,10 @@ defmodule PlantIdDiscordBot.Cog.PlantNetMessage do
   def id(message, identification_type \\ "all") do
     case RateLimiter.check_limit(message.guild_id) do
       {:limit_exceeded, _requests_used, _requests_limit} ->
-        Api.create_message(message.channel_id,
-          content:
-            "This server has exceeded its allowed requests in 24 hours. Please try again tomorrow.",
-          message_reference: %{message_id: message.id}
+        send_message(
+          "This server has exceeded its allowed requests in 24 hours. Please try again tomorrow.",
+          message.channel_id,
+          message.id
         )
 
       {:ok, _requests_used, _requests_limit} ->
@@ -48,6 +48,8 @@ defmodule PlantIdDiscordBot.Cog.PlantNetMessage do
           @api.create_message(message.channel_id,
             content: "An error has occured. Please try again later."
           )
+
+          # send_message("An error has occured. Please try again later.", message.channel_id)
 
           nil
       end
@@ -97,12 +99,7 @@ defmodule PlantIdDiscordBot.Cog.PlantNetMessage do
         RateLimiter.increase_counter(guild_id)
         Metrics.increase_request_count(guild_id, guild_name)
 
-        # Nostrum.Api.create_message/2 is deprecated but the new function is not available in v0.10 of the library
-        # Nostrum.Api.message/2 will be the new function
-        Api.create_message(message.channel_id,
-          content: response_message,
-          message_reference: %{message_id: message.id}
-        )
+        send_message(response_message, message.channel_id, message.id)
 
       {:ok, %HTTPoison.Response{status_code: 401, body: body}} ->
         Logger.critical("Unauthorized request to PlantNet API: #{body}",
@@ -110,27 +107,18 @@ defmodule PlantIdDiscordBot.Cog.PlantNetMessage do
           guild_name: guild_name
         )
 
-        Api.create_message(message.channel_id,
-          content: "Unauthorized request to PlantNet API.",
-          message_reference: %{message_id: message.id}
-        )
+        send_message("Unauthorizes requesnt to PlantNet API", message.channel_id, message.id)
 
       {:ok, %HTTPoison.Response{status_code: 404}} ->
         RateLimiter.increase_counter(guild_id)
         Metrics.increase_request_count(guild_id, guild_name)
 
-        Api.create_message(message.channel_id,
-          content: "Species Not Found",
-          message_reference: %{message_id: message.id}
-        )
+        send_message("Species Not Found", message.channel_id, message.id)
 
       {:ok, %HTTPoison.Response{status_code: 429}} ->
         Logger.warning("Request limit exceeded for the PlantNet API")
 
-        Api.create_message(message.channel_id,
-          content: "Too Many Requests",
-          message_reference: %{message_id: message.id}
-        )
+        send_message("Too Many Requests", message.channel_id, message.id)
 
       {_, _} ->
         Logger.error("Internal server error when contacting the PlantNet API",
@@ -138,10 +126,7 @@ defmodule PlantIdDiscordBot.Cog.PlantNetMessage do
           guild_name: guild_name
         )
 
-        Api.create_message(message.channel_id,
-          content: "Internal Server Error",
-          message_reference: %{message_id: message.id}
-        )
+        send_message("Internal Server Error", message.channel_id, message.id)
     end
   end
 
@@ -158,5 +143,21 @@ defmodule PlantIdDiscordBot.Cog.PlantNetMessage do
   defp cleanup_saved_images(saved_images) do
     Enum.map(saved_images, fn {:ok, filename} -> filename end)
     |> File.delete_files!()
+  end
+
+  # Nostrum.Api.create_message/2 is deprecated but the new function is not available in v0.10 of the library
+  # Nostrum.Api.message/2 will be the new function
+  # look at @api.create_message and move to this if needed
+  defp send_message(content, channel_id, message_id \\ nil) do
+    case message_id do
+      nil ->
+        Api.create_message(channel_id, content: content)
+
+      _ ->
+        Api.create_message(channel_id,
+          content: content,
+          message_reference: %{message_id: message_id}
+        )
+    end
   end
 end
