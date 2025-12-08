@@ -45,8 +45,8 @@ defmodule PlantIdDiscordBot.Consumer do
   defp handle_interaction("help", interaction), do: Cog.Info.help(interaction)
   defp handle_interaction("info", interaction), do: Cog.Info.info(interaction)
   defp handle_interaction("stats", interaction), do: Cog.Info.stats(interaction)
-  defp handle_interaction("status", interaction), do: Cog.Info.source(interaction)
-  defp handle_interaction("servers", interaction), do: Cog.Info.status(interaction)
+  defp handle_interaction("status", interaction), do: Cog.Info.status(interaction)
+  defp handle_interaction("servers", interaction), do: Cog.Info.servers(interaction)
   defp handle_interaction("diseases", interaction), do: Cog.Diseases.diseases(interaction)
   defp handle_interaction("projects", interaction), do: Cog.Projects.projects(interaction)
 end
