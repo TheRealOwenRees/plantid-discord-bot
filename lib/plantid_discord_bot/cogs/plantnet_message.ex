@@ -88,13 +88,17 @@ defmodule PlantIdDiscordBot.Cog.PlantNetMessage do
     end
   end
 
-  defp get_response(query_uri, message) do
+  defp get_response(query_uri, message, interaction_type \\ nil) do
     guild_id = message.guild_id
     guild_name = Guild.get_guild_name!(guild_id)
 
     case HTTPoison.get(query_uri) do
       {:ok, %HTTPoison.Response{status_code: 200, body: body}} ->
-        response_message = Parser.parse(body)
+        response_message =
+          case interaction_type do
+            "diseases" -> Parser.parse_disease_response(body)
+            _ -> Parser.parse(body)
+          end
 
         RateLimiter.increase_counter(guild_id)
         Metrics.increase_request_count(guild_id, guild_name)

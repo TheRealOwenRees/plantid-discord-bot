@@ -30,6 +30,18 @@ defmodule PlantIdDiscordBot.PlantNet.Parser do
   @powo_base_url "https://powo.science.kew.org/taxon"
   @score_threshold Application.compile_env(:plantid_discord_bot, :score_threshold)
 
+  def parse_disease_response(response) do
+    response
+    |> to_map!()
+    |> filter_by_score()
+    |> generate_disease_response_message()
+  end
+
+  def generate_disease_response_message(data) do
+    data
+    |> to_string()
+  end
+
   @doc """
   Parses the response from the PlantNet API into a map.
   """
