@@ -48,6 +48,26 @@ defmodule PlantIdDiscordBotTest.Cog do
       assert uri == test_uri
     end
 
+    test "projects" do
+      uri =
+        PlantNetMessage.build_query_uri(@image_filenames, %{name: "projects", id: "project-id"})
+
+      test_uri =
+        @image_filenames
+        |> Enum.reduce(
+          URI.parse("#{@plantnet_api_base_url}/identify/project-id")
+          |> URI.append_query("api-key=#{@plantnet_api_key}"),
+          fn filename, acc ->
+            URI.append_query(acc, "images=#{filename}")
+          end
+        )
+        |> URI.append_query("nb-results=5")
+        |> URI.append_query("type=kt")
+        |> URI.to_string()
+
+      assert uri == test_uri
+    end
+
     test "default" do
       uri = PlantNetMessage.build_query_uri(@image_filenames, "all")
 

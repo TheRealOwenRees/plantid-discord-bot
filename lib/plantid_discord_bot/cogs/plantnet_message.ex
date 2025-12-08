@@ -138,6 +138,10 @@ defmodule PlantIdDiscordBot.Cog.PlantNetMessage do
 
   defp create_base_uri("all"), do: "#{@plantnet_api_base_url}/identify/all"
   defp create_base_uri("diseases"), do: "#{@plantnet_api_base_url}/diseases/identify"
+
+  defp create_base_uri(%{name: "projects", id: id}),
+    do: "#{@plantnet_api_base_url}/identify/#{id}"
+
   defp create_base_uri(_), do: "#{@plantnet_api_base_url}/identify/all"
 
   defp add_required_query_params(base_uri, image_filenames) do

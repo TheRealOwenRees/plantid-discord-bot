@@ -4,6 +4,8 @@ defmodule PlantIdDiscordBot.Cog.Projects do
   """
 
   alias PlantIdDiscordBot.PlantNet.Projects
+  alias PlantIdDiscordBot.Cog.PlantNetMessage
+
   @api Application.compile_env(:plantid_discord_bot, :api)
 
   def autocomplete(interaction) do
@@ -41,34 +43,41 @@ defmodule PlantIdDiscordBot.Cog.Projects do
   end
 
   def projects(interaction) do
-    # Extract selected project ID
     project_id =
       interaction.data.options
       |> Enum.find(&(&1.name == "project"))
       |> then(&(&1 && &1.value))
 
-    attachments_map = interaction.data[:resolved][:attachments] || %{}
+    case project_id do
+      nil ->
+        @api.create_interaction_response(interaction, %{
+          type: 4,
+          data: %{content: "Please choose a project using autocomplete."}
+        })
 
-    images =
-      interaction.data.options
-      |> Enum.filter(fn opt -> String.starts_with?(opt.name, "image") end)
-      |> Enum.map(fn opt -> Map.get(attachments_map, opt.value) end)
-      |> Enum.reject(&is_nil/1)
+      id ->
+        @api.create_interaction_response(interaction, %{
+          type: 4,
+          data: %{content: "Processing images for project **#{id}**..."}
+        })
 
-    @api.create_interaction_response(interaction, %{
-      type: 4,
-      data: %{
-        content:
-          case project_id do
-            nil ->
-              "Please choose a project using autocomplete."
+        resolved = Map.get(interaction.data, :resolved)
+        attachments_map = (resolved && Map.get(resolved, :attachments)) || %{}
 
-            id ->
-              image_count = length(images)
-              # "You selected project: **#{id}**"
-              "Identification by project coming soon."
-          end
-      }
-    })
+        images =
+          interaction.data.options
+          |> Enum.filter(fn opt -> String.starts_with?(opt.name, "image") end)
+          |> Enum.map(fn opt -> Map.get(attachments_map, opt.value) end)
+          |> Enum.reject(&is_nil/1)
+
+        message = %{
+          guild_id: interaction.guild_id,
+          channel_id: interaction.channel_id,
+          id: nil,
+          attachments: images
+        }
+
+        PlantNetMessage.id(message, %{name: "projects", id: id})
+    end
   end
 end
