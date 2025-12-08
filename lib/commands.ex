@@ -38,6 +38,20 @@ defmodule PlantIdDiscordBot.Consumer.Commands do
         name: "servers",
         description: "All servers that this bot belongs to",
         options: []
+      },
+      %{
+        name: "projects",
+        description: "Plants grouped by region  or type, for identification",
+        options: [
+          %{
+            # STRING
+            type: 3,
+            name: "project",
+            description: "Search for a project",
+            required: true,
+            autocomplete: true
+          }
+        ]
       }
     ]
   end

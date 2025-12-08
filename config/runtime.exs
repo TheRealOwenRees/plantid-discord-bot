@@ -6,7 +6,8 @@ config :plantid_discord_bot,
   api: Nostrum.Api,
   plantnet_api_key: System.get_env("PLANTNET_API_KEY"),
   fileserver_url: System.get_env("PLANTID_FILESERVER_URL", "http://localhost:4321"),
-  metrics_webhook_url: System.get_env("PLANTID_LOGS_DISCORD_WEBHOOK_URL")
+  metrics_webhook_url: System.get_env("PLANTID_LOGS_DISCORD_WEBHOOK_URL"),
+  dev_guild_id: System.get_env("DISCORD_DEV_GUILD_ID")
 
 config :nostrum,
   token: System.get_env("PLANTID_DISCORD_BOT_TOKEN")
