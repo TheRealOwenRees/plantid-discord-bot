@@ -4,20 +4,20 @@ defmodule PlantIdDiscordBot.Cog.Projects do
   """
 
   alias PlantIdDiscordBot.PlantNet.Projects
+  alias PlantIdDiscordBot.Cog.PlantNetMessage
+
   @api Application.compile_env(:plantid_discord_bot, :api)
 
-  # ---------------------------------------------------------
-  # 1. AUTOCOMPLETE HANDLER
-  # ---------------------------------------------------------
   def autocomplete(interaction) do
-    # Extract what the user is typing (may be nil)
-    [%{value: user_input}] = interaction.data.options
-    user_input = user_input || ""
+    options = interaction.data.options || []
 
-    # Fetch your project list
+    focused_option =
+      Enum.find(options, fn opt -> Map.get(opt, :focused) == true end)
+
+    user_input = (focused_option && focused_option.value) || ""
+
     projects = Projects.retrieve_projects()
 
-    # Filter based on description
     suggestions =
       projects
       |> Enum.filter(fn p ->
@@ -36,36 +36,48 @@ defmodule PlantIdDiscordBot.Cog.Projects do
         }
       end)
 
-    # Respond with autocomplete choices
     @api.create_interaction_response(interaction, %{
       type: 8,
       data: %{choices: suggestions}
     })
   end
 
-  # ---------------------------------------------------------
-  # 2. FINAL COMMAND EXECUTION
-  # ---------------------------------------------------------
   def projects(interaction) do
-    # Extract selected project ID
     project_id =
       interaction.data.options
       |> Enum.find(&(&1.name == "project"))
       |> then(&(&1 && &1.value))
 
-    @api.create_interaction_response(interaction, %{
-      type: 4,
-      data: %{
-        content:
-          case project_id do
-            nil ->
-              "Please choose a project using autocomplete."
+    case project_id do
+      nil ->
+        @api.create_interaction_response(interaction, %{
+          type: 4,
+          data: %{content: "Please choose a project using autocomplete."}
+        })
 
-            id ->
-              # "You selected project: **#{id}**"
-              "Identification by project coming soon."
-          end
-      }
-    })
+      id ->
+        @api.create_interaction_response(interaction, %{
+          type: 4,
+          data: %{content: "Processing images for project **#{id}**..."}
+        })
+
+        resolved = Map.get(interaction.data, :resolved)
+        attachments_map = (resolved && Map.get(resolved, :attachments)) || %{}
+
+        images =
+          interaction.data.options
+          |> Enum.filter(fn opt -> String.starts_with?(opt.name, "image") end)
+          |> Enum.map(fn opt -> Map.get(attachments_map, opt.value) end)
+          |> Enum.reject(&is_nil/1)
+
+        message = %{
+          guild_id: interaction.guild_id,
+          channel_id: interaction.channel_id,
+          id: nil,
+          attachments: images
+        }
+
+        PlantNetMessage.id(message, %{name: "projects", id: id})
+    end
   end
 end

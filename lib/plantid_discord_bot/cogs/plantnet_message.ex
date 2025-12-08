@@ -18,21 +18,21 @@ defmodule PlantIdDiscordBot.Cog.PlantNetMessage do
   @plantnet_api_base_url Application.compile_env(:plantid_discord_bot, :plantnet_api_base_url)
   @max_results Application.compile_env(:plantid_discord_bot, :max_results)
 
-  def id(message) do
+  def id(message, identification_type \\ "all") do
     case RateLimiter.check_limit(message.guild_id) do
       {:limit_exceeded, _requests_used, _requests_limit} ->
-        Api.create_message(message.channel_id,
-          content:
-            "This server has exceeded its allowed requests in 24 hours. Please try again tomorrow.",
-          message_reference: %{message_id: message.id}
+        send_message(
+          "This server has exceeded its allowed requests in 24 hours. Please try again tomorrow.",
+          message.channel_id,
+          message.id
         )
 
       {:ok, _requests_used, _requests_limit} ->
-        do_identification(message)
+        do_identification(message, identification_type)
     end
   end
 
-  def do_identification(message) do
+  def do_identification(message, identification_type) do
     saved_images =
       try do
         Enum.take(message.attachments, 5)
@@ -49,13 +49,15 @@ defmodule PlantIdDiscordBot.Cog.PlantNetMessage do
             content: "An error has occured. Please try again later."
           )
 
+          # send_message("An error has occured. Please try again later.", message.channel_id)
+
           nil
       end
 
     if saved_images do
       try do
         prepare_images(saved_images)
-        |> build_query_uri()
+        |> build_query_uri(identification_type)
         |> get_response(message)
       rescue
         e ->
@@ -97,12 +99,7 @@ defmodule PlantIdDiscordBot.Cog.PlantNetMessage do
         RateLimiter.increase_counter(guild_id)
         Metrics.increase_request_count(guild_id, guild_name)
 
-        # Nostrum.Api.create_message/2 is deprecated but the new function is not available in v0.10 of the library
-        # Nostrum.Api.message/2 will be the new function
-        Api.create_message(message.channel_id,
-          content: response_message,
-          message_reference: %{message_id: message.id}
-        )
+        send_message(response_message, message.channel_id, message.id)
 
       {:ok, %HTTPoison.Response{status_code: 401, body: body}} ->
         Logger.critical("Unauthorized request to PlantNet API: #{body}",
@@ -110,27 +107,18 @@ defmodule PlantIdDiscordBot.Cog.PlantNetMessage do
           guild_name: guild_name
         )
 
-        Api.create_message(message.channel_id,
-          content: "Unauthorized request to PlantNet API.",
-          message_reference: %{message_id: message.id}
-        )
+        send_message("Unauthorizes requesnt to PlantNet API", message.channel_id, message.id)
 
       {:ok, %HTTPoison.Response{status_code: 404}} ->
         RateLimiter.increase_counter(guild_id)
         Metrics.increase_request_count(guild_id, guild_name)
 
-        Api.create_message(message.channel_id,
-          content: "Species Not Found",
-          message_reference: %{message_id: message.id}
-        )
+        send_message("Species Not Found", message.channel_id, message.id)
 
       {:ok, %HTTPoison.Response{status_code: 429}} ->
         Logger.warning("Request limit exceeded for the PlantNet API")
 
-        Api.create_message(message.channel_id,
-          content: "Too Many Requests",
-          message_reference: %{message_id: message.id}
-        )
+        send_message("Too Many Requests", message.channel_id, message.id)
 
       {_, _} ->
         Logger.error("Internal server error when contacting the PlantNet API",
@@ -138,18 +126,27 @@ defmodule PlantIdDiscordBot.Cog.PlantNetMessage do
           guild_name: guild_name
         )
 
-        Api.create_message(message.channel_id,
-          content: "Internal Server Error",
-          message_reference: %{message_id: message.id}
-        )
+        send_message("Internal Server Error", message.channel_id, message.id)
     end
   end
 
-  @spec build_query_uri([String.t()]) :: String.t()
-  defp build_query_uri(image_filenames) do
-    URI.parse(
-      "#{@plantnet_api_base_url}/identify/all?api-key=#{Application.get_env(:plantid_discord_bot, :plantnet_api_key)}"
-    )
+  @spec build_query_uri([String.t()], String.t()) :: String.t()
+  def build_query_uri(image_filenames, identification_type) do
+    create_base_uri(identification_type)
+    |> add_required_query_params(image_filenames)
+  end
+
+  defp create_base_uri("all"), do: "#{@plantnet_api_base_url}/identify/all"
+  defp create_base_uri("diseases"), do: "#{@plantnet_api_base_url}/diseases/identify"
+
+  defp create_base_uri(%{name: "projects", id: id}),
+    do: "#{@plantnet_api_base_url}/identify/#{id}"
+
+  defp create_base_uri(_), do: "#{@plantnet_api_base_url}/identify/all"
+
+  defp add_required_query_params(base_uri, image_filenames) do
+    URI.parse(base_uri)
+    |> URI.append_query("api-key=#{Application.get_env(:plantid_discord_bot, :plantnet_api_key)}")
     |> URI.append_query("images=#{Enum.join(image_filenames, "&images=")}")
     |> URI.append_query("nb-results=#{@max_results}")
     |> URI.append_query("type=kt")
@@ -159,5 +156,21 @@ defmodule PlantIdDiscordBot.Cog.PlantNetMessage do
   defp cleanup_saved_images(saved_images) do
     Enum.map(saved_images, fn {:ok, filename} -> filename end)
     |> File.delete_files!()
+  end
+
+  # Nostrum.Api.create_message/2 is deprecated but the new function is not available in v0.10 of the library
+  # Nostrum.Api.message/2 will be the new function
+  # look at @api.create_message and move to this if needed
+  defp send_message(content, channel_id, message_id \\ nil) do
+    case message_id do
+      nil ->
+        Api.create_message(channel_id, content: content)
+
+      _ ->
+        Api.create_message(channel_id,
+          content: content,
+          message_reference: %{message_id: message_id}
+        )
+    end
   end
 end
