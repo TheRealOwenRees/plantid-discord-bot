@@ -62,7 +62,8 @@ defmodule PlantIdDiscordBot.Cog.Projects do
               "Please choose a project using autocomplete."
 
             id ->
-              "You selected project: **#{id}**"
+              # "You selected project: **#{id}**"
+              "Identification by project coming soon."
           end
       }
     })
