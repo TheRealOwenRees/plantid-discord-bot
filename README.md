@@ -46,6 +46,9 @@ PLANTID_DISCORD_BOT_TOKEN=           client secret from the bot's application
 PLANTID_LOGS_DISCORD_WEBHOOK_URL=    webhook url for the log channel
 PLANTNET_API_KEY=                    API key for the PlantNet service
 
+# needed in development
+DISCORD_DEV_GUILD_ID=                Your guild ID to populate application commands immediately
+
 # needed in production
 PLANTID_FILESERVER_URL               URL and port(if needed) for the http file server
 ```

@@ -3,10 +3,12 @@
 ## 🚀 High Priority
 
 - [x] Update deps and run on Elixir 1.18 / otp 28
+- [ ] Pull projects on a regular basis
+- [ ] identify by project
+- [ ] identify by country
 - [ ] Run static analysis tools and fix code
 - [ ] Increase test coverage
 - [ ] Fix spec errors
-- [ ] Improve error return message
 
 ## 📦 Medium Priority
 
