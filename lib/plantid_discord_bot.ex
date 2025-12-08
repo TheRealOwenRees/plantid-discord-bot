@@ -5,6 +5,7 @@ defmodule PlantIdDiscordBot.Consumer do
   use Nostrum.Consumer
   alias Nostrum.Api
   alias PlantIdDiscordBot.{Cog, Consumer}
+  alias PlantIdDiscordBot.PlantNet.Projects
 
   @global_application_commands Consumer.Commands.global_application_commands()
 
